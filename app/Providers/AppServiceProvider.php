@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use App\Http\Kernel;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,22 +28,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $notInProd = ! app()->isProduction();
+        Model::shouldBeStrict(! app()->isProduction());
 
-        \Illuminate\Database\Eloquent\Model::preventSilentlyDiscardingAttributes($notInProd);
-        \Illuminate\Database\Eloquent\Model::preventLazyLoading($notInProd);
-
-        \Illuminate\Support\Facades\DB::whenQueryingForLongerThan(500, function (\Illuminate\Database\Connection $connection) {
-
+        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
+            $this->log('Query took too long time to execute: ' . $connection->query()->toSql());
         });
 
-        // req cycle
-        $kernel = app(Kernel::class);
-        $kernel->whenRequestLifecycleIsLongerThan(
-            CarbonInterval::seconds(4),
-            function () {
+        if ($this->app->runningInConsole()) {
+            // Log slow commands.
+            $this->app[ConsoleKernel::class]->whenCommandLifecycleIsLongerThan(
+                CarbonInterval::seconds(5),
+                function ($startedAt, $input, $status) {
+                    $this->log('Command request is too long: ' . request()->url());
+                }
+            );
+        } else {
+            // Log slow requests.
+            $this->app[HttpKernel::class]->whenRequestLifecycleIsLongerThan(
+                CarbonInterval::seconds(5),
+                function ($startedAt, $request, $response) {
+                    $this->log('Http request is too long: ' . request()->url());
+                }
+            );
+        }
+    }
 
-            }
-        );
+    private function log(string $message): void
+    {
+        logger()
+            ->channel('telegram')
+            ->debug($message);
     }
 }
