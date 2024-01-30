@@ -28,28 +28,34 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::shouldBeStrict(! app()->isProduction());
+        Model::shouldBeStrict(! $this->app->isProduction());
 
-        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
-            $this->log('Query took too long time to execute: ' . $connection->query()->toSql());
-        });
+        if ($this->app->isProduction()) {
 
-        if ($this->app->runningInConsole()) {
-            // Log slow commands.
-            $this->app[ConsoleKernel::class]->whenCommandLifecycleIsLongerThan(
-                CarbonInterval::seconds(5),
-                function ($startedAt, $input, $status) {
-                    $this->log('Command request is too long: ' . request()->url());
+            if ($this->app->runningInConsole()) {
+                // Log slow commands.
+                $this->app[ConsoleKernel::class]->whenCommandLifecycleIsLongerThan(
+                    CarbonInterval::seconds(5),
+                    function ($startedAt, $input, $status) {
+                        $this->log('Command request took too long: ' . $input);
+                    }
+                );
+            } else {
+                // Log slow requests.
+                $this->app[HttpKernel::class]->whenRequestLifecycleIsLongerThan(
+                    CarbonInterval::seconds(5),
+                    function ($startedAt, $request, $response) {
+                        $this->log('Http request took too long: ' . $request->url());
+                    }
+                );
+            }
+
+            DB::listen(function ($query) {
+                $time = 100;
+                if ($query->time > $time) {
+                    $this->log(sprintf('query longer than time %d ms: %d ms. SQL: %s', $time, $query->time, $query->sql));
                 }
-            );
-        } else {
-            // Log slow requests.
-            $this->app[HttpKernel::class]->whenRequestLifecycleIsLongerThan(
-                CarbonInterval::seconds(5),
-                function ($startedAt, $request, $response) {
-                    $this->log('Http request is too long: ' . request()->url());
-                }
-            );
+            });
         }
     }
 
