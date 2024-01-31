@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,9 +24,14 @@ class DatabaseSeeder extends Seeder
         // ]);
         Brand::factory(30)->create();
 
+        Storage::createDirectory('images/products');
+
         Product::factory(100)
             ->has(Category::factory(rand(1, 3)))
             ->create();
 
+        Product::factory(10)
+            ->withTitle('test-slug')
+            ->create();
     }
 }
