@@ -26,12 +26,8 @@ class DatabaseSeeder extends Seeder
 
         Storage::createDirectory('images/products');
 
-        Product::factory(100)
+        Product::factory(50)
             ->has(Category::factory(rand(1, 3)))
-            ->create();
-
-        Product::factory(10)
-            ->withTitle('test-slug')
             ->create();
     }
 }
