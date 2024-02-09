@@ -3,6 +3,11 @@
     {{ config('app.name') . ' - ' . 'Reset password' }}
 @endsection
 @section('content')
+    @if($message = flash()->get())
+        <div class="{{ $message->getClass() }} p-5">
+            {{ $message->getMessage() }}
+        </div>
+    @endif
     <x-forms.auth-form title="Обновить пароль"
                        action="{{route('password.update')}}"
                        method="POST">

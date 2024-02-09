@@ -17,7 +17,9 @@ class AuthController extends Controller
 {
     public function index()
     {
+        flash()->info('info msg');
 
+        return to_route('home');
     }
 
     public function register()
@@ -91,9 +93,13 @@ class AuthController extends Controller
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['message' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($status !== Password::RESET_LINK_SENT) {
+            flash()->alert(__($status));
+            return back();
+        }
+
+        flash()->info(__($status));
+        return back();
     }
 
     public function resetPassword(string $token)
@@ -104,7 +110,7 @@ class AuthController extends Controller
     public function resetPasswordPost(ResetPasswordFormRequest $request)
     {
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only( 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => bcrypt($password)
@@ -115,10 +121,13 @@ class AuthController extends Controller
                 event(new PasswordReset($user));
             }
         );
+        if ($status !== Password::PASSWORD_RESET) {
+            flash()->alert(__($status));
+            return back();
+        }
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('message', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+        flash()->info(__($status));
+        return to_route('login');
     }
 
     public function socialiteGithub()

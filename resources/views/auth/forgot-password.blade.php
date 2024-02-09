@@ -3,19 +3,21 @@
     {{ config('app.name') . ' - ' . 'Forgot password' }}
 @endsection
 @section('content')
-    @if(session('message'))
-        {{session('message')}}
+    @if($message = flash()->get())
+        <div class="{{ $message->getClass() }} p-5">
+            {{ $message->getMessage() }}
+        </div>
     @endif
     <x-forms.auth-form title="Восстановить пароль"
                        action="{{route('forgot-password-post')}}"
                        method="POST">
 
         <x-forms.text-input
-            name="email"
-            :isError="$errors->has('email')"
-            type="email"
-            placeholder="{{__('E-mail')}}"
-            value="{{ old('email') }}"/>
+                name="email"
+                :isError="$errors->has('email')"
+                type="email"
+                placeholder="{{__('E-mail')}}"
+                value="{{ old('email') }}"/>
         @error('email')
         <x-forms.error>{{ $message }}</x-forms.error>
         @enderror

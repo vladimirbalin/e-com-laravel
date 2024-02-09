@@ -3,6 +3,11 @@
     {{ config('app.name') . ' - ' . 'Register with email' }}
 @endsection
 @section('content')
+    @if($message = flash()->get())
+        <div class="{{ $message->getClass() }} p-5">
+            {{ $message->getMessage() }}
+        </div>
+    @endif
     <x-forms.auth-form title="Регистрация"
                        action="{{route('register-post')}}"
                        method="POST">

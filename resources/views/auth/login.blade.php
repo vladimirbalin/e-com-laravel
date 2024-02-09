@@ -3,6 +3,11 @@
     {{ config('app.name') . ' - ' . 'Login' }}
 @endsection
 @section('content')
+    @if($message = flash()->get())
+        <div class="{{ $message->getClass() }} p-5">
+            {{ $message->getMessage() }}
+        </div>
+    @endif
 
     <x-forms.auth-form title="Вход в аккаунт">
         <ul class="space-y-3">

@@ -3,6 +3,11 @@
     {{ config('app.name') . ' - ' . 'Register' }}
 @endsection
 @section('content')
+    @if($message = flash()->get())
+        <div class="{{ $message->getClass() }} p-5">
+            {{ $message->getMessage() }}
+        </div>
+    @endif
     <x-forms.auth-form title="Регистрация">
 
         <ul class="space-y-3">

@@ -12,7 +12,7 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->company(),
+            'title' => $this->faker->title(),
             'thumbnail' => $this->faker->fixturesImage('brands', 'images/brands')
         ];
     }
