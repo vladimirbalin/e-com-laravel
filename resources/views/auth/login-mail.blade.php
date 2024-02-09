@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 @section('title')
-    {{ config('app.name') . ' - ' . 'Login mail' }}
+    {{ config('app.name') . ' - ' . __('titles.login_mail') }}
 @endsection
 @section('content')
     @if($message = flash()->get())

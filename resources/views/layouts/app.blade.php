@@ -4,7 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{\Illuminate\Support\Facades\Vite::asset('resources/images/apple-touch-icon.png')}})">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{\Illuminate\Support\Facades\Vite::asset('resources/images/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="{{\Illuminate\Support\Facades\Vite::asset('resources/images/favicon-16x16.png')}}">
+    <link rel="mask-icon" color="#1E1F43"
+          href="{{\Illuminate\Support\Facades\Vite::asset('resources/images/safari-pinned-tab.svg')}}">
+
+    <title>@yield('title', config('app.name'))</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

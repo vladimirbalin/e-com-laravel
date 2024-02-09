@@ -15,13 +15,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function index()
-    {
-        flash()->info('info msg');
-
-        return to_route('home');
-    }
-
     public function register()
     {
         return view('auth.register');
@@ -110,7 +103,7 @@ class AuthController extends Controller
     public function resetPasswordPost(ResetPasswordFormRequest $request)
     {
         $status = Password::reset(
-            $request->only( 'password', 'password_confirmation', 'token'),
+            $request->only( 'email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
                     'password' => bcrypt($password)

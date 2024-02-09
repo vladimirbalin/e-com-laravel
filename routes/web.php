@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('/',HomeController::class)->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::get('/login-mail', 'loginMail')->name('login-mail');
@@ -21,7 +21,13 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/reset-password', 'resetPasswordPost')->name('password.update')->middleware('guest');
 
     Route::get('/auth/github/redirect', 'socialiteGithub')->name('socialite.github');
-    Route::get('/auth/github/callback','socialiteGithubCallback')->name('socialite.github.callback');
+    Route::get('/auth/github/callback', 'socialiteGithubCallback')->name('socialite.github.callback');
 
     Route::delete('/logout', 'logout')->name('logout');
+});
+
+Route::get('mail', function () {
+    $user = \App\Models\User::factory()->create();
+
+    return (new \App\Notifications\WelcomeUserNotification())->toMail(new stdClass());
 });

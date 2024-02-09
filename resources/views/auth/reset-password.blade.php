@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 @section('title')
-    {{ config('app.name') . ' - ' . 'Reset password' }}
+    {{ config('app.name') . ' - ' . __('titles.reset_password') }}
 @endsection
 @section('content')
     @if($message = flash()->get())

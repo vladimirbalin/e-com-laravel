@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 @section('title')
-    {{ config('app.name') . ' - ' . 'Forgot password' }}
+    {{ config('app.name') . ' - ' . __('titles.forgot_password') }}
 @endsection
 @section('content')
     @if($message = flash()->get())
@@ -13,11 +13,11 @@
                        method="POST">
 
         <x-forms.text-input
-                name="email"
-                :isError="$errors->has('email')"
-                type="email"
-                placeholder="{{__('E-mail')}}"
-                value="{{ old('email') }}"/>
+            name="email"
+            :isError="$errors->has('email')"
+            type="email"
+            placeholder="{{__('E-mail')}}"
+            value="{{ old('email') }}"/>
         @error('email')
         <x-forms.error>{{ $message }}</x-forms.error>
         @enderror
