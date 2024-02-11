@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendWelcomeUserNotification implements ShouldQueue
+class RegisteredListener implements ShouldQueue
 {
     public function __construct()
     {
