@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Support\Flash\Flash;
+use Src\Support\Flash\Flash;
 
 if (! function_exists('flash')) {
     function flash(): Flash

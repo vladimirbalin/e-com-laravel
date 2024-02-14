@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Services\Telegram;
+namespace Src\Services\Telegram;
 
 use App\Exceptions\TelegramBotApiException;
 use Illuminate\Support\Facades\Http;
@@ -8,7 +9,7 @@ use Throwable;
 
 class TelegramBotApi
 {
-    private const string HOST = 'api.telegram.org/bot';
+    public const string HOST = 'api.telegram.org/bot';
 
     public static function sendMessage(string $token, int $chatId, string $message): bool
     {

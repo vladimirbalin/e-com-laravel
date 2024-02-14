@@ -1,13 +1,12 @@
 <?php
-
 declare(strict_types=1);
 
-namespace App\Logging\Telegram;
+namespace Src\Support\Logging\Telegram;
 
-use App\Services\Telegram\TelegramBotApi;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Monolog\LogRecord;
+use Src\Services\Telegram\TelegramBotApi;
 
 class TelegramLoggerHandler extends AbstractProcessingHandler
 {

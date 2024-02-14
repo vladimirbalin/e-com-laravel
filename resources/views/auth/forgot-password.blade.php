@@ -9,7 +9,7 @@
         </div>
     @endif
     <x-forms.auth-form title="Восстановить пароль"
-                       action="{{route('forgot-password-post')}}"
+                       action="{{route('forgot-password.handle')}}"
                        method="POST">
 
         <x-forms.text-input
@@ -26,7 +26,7 @@
 
         <x-slot:links>
             <div class="space-y-3 mt-5">
-                <div class="text-xxs md:text-xs"><a href="{{ route('register') }}"
+                <div class="text-xxs md:text-xs"><a href="{{ route('register.show') }}"
                                                     class="text-white hover:text-white/70 font-bold">Регистрация</a>
                 </div>
             </div>

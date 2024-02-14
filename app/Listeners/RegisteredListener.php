@@ -2,11 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Models\User;
 use App\Notifications\WelcomeUserNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Src\Domain\Auth\Models\User;
 
 class RegisteredListener implements ShouldQueue
 {

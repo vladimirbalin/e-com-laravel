@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use App\Models\User;
 use App\Notifications\WelcomeUserNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Src\Domain\Auth\Models\User;
 use Tests\TestCase;
 
 class RegisteredEventTest extends TestCase

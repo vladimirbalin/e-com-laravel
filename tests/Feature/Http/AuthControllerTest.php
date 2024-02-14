@@ -3,24 +3,27 @@
 namespace Http;
 
 use App\Listeners\RegisteredListener;
-use App\Models\User;
-use App\Notifications\WelcomeUserNotification;
-use App\Support\Flash\Flash;
-use App\Support\Flash\FlashMessage;
-use Illuminate\Auth\Events\PasswordReset;
+use Database\Factories\UserFactory;
+use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Src\Domain\Auth\Models\User;
+use Src\Support\Flash\Flash;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    private function userFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     public function testBasic()
     {
@@ -29,23 +32,23 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_register()
+    public function test_register_show()
     {
-        return $this->get(route('register'))
+        return $this->get(route('register.show'))
             ->assertOk()
             ->assertViewIs('auth.register');
     }
 
-    public function test_register_mail()
+    public function test_register_mail_show()
     {
-        return $this->get(route('register-mail'))
+        return $this->get(route('register.mail.show'))
             ->assertOk()
             ->assertViewIs('auth.register-mail');
     }
 
-    public function test_login()
+    public function test_login_show()
     {
-        return $this->get(route('login'))
+        return $this->get(route('login.show'))
             ->assertOk()
             ->assertViewIs('auth.login');
     }
@@ -54,22 +57,20 @@ class AuthControllerTest extends TestCase
     {
         Event::fake();
 
+        $user = $this->userFactory()->withEmail('valid@mail.com')->create();
+
         $payload = [
-            'name' => 'Test',
-            'email' => 'testing@cutcode.ru',
-            'password' => '12345678',
-            'password_confirmation' => '12345678',
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
-        $response = $this->post(route('register-post'), $payload);
+        $response = $this->post(route('login.handle'), $payload);
 
         $response->assertRedirect();
 
-        $this->assertDatabaseHas('users', ['email' => $payload['email']]);
-        $user = User::query()->where(['email' => $payload['email']])->first();
-
-        Event::assertListening(Registered::class, RegisteredListener::class);
-        Event::assertDispatched(Registered::class);
+        Event::assertDispatched(Authenticated::class);
 
         $response->assertRedirect(route('home'));
         $this->assertAuthenticatedAs($user);
@@ -88,7 +89,7 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => $password,
         ];
 
-        $response = $this->post(route('register-post'), $payload);
+        $response = $this->post(route('register.handle'), $payload);
         $response->assertValid();
 
         Event::assertDispatched(Registered::class);
@@ -98,16 +99,16 @@ class AuthControllerTest extends TestCase
         $response->assertRedirect(route('home'));
     }
 
-    public function test_login_mail()
+    public function test_login_mail_show()
     {
-        return $this->get(route('login-mail'))
+        return $this->get(route('login.mail.show'))
             ->assertOk()
             ->assertViewIs('auth.login-mail');
     }
 
     public function test_logout()
     {
-        $user = User::factory()->create();
+        $user = $this->userFactory()->create();
         $this->actingAs($user);
 
         $this->delete(route('logout'))
@@ -117,17 +118,17 @@ class AuthControllerTest extends TestCase
 
     public function test_forgot_password()
     {
-        return $this->get(route('forgot-password'))
+        return $this->get(route('forgot-password.show'))
             ->assertOk()
             ->assertViewIs('auth.forgot-password');
     }
 
     public function test_forgot_password_post()
     {
-        $user = User::factory()->create();
+        $user = $this->userFactory()->create();
         $payload = ['email' => $user->email];
 
-        $response = $this->post(route('forgot-password-post'), $payload);
+        $response = $this->post(route('forgot-password.handle'), $payload);
 
         $response->assertRedirect();
         $response->assertSessionHas(Flash::MESSAGE_KEY, 'Ссылка на сброс пароля была отправлена.');
@@ -136,7 +137,7 @@ class AuthControllerTest extends TestCase
 
     public function test_reset_password(): void
     {
-        $user = User::factory()->create();
+        $user = $this->userFactory()->create();
         $token = Password::createToken($user);
 
         $this->get(route('password.reset', ['token' => $token]))
@@ -148,7 +149,7 @@ class AuthControllerTest extends TestCase
 
     public function test_reset_password_post()
     {
-        $user = User::factory()->create();
+        $user = $this->userFactory()->create();
         $token = Password::createToken($user);
         $this->assertTrue(Password::tokenExists($user, $token));
 

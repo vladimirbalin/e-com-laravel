@@ -9,7 +9,7 @@
         </div>
     @endif
     <x-forms.auth-form title="Регистрация"
-                       action="{{route('register-post')}}"
+                       action="{{route('register.handle')}}"
                        method="POST">
 
         <x-forms.text-input
@@ -56,7 +56,7 @@
 
         <x-slot:links>
             <div class="space-y-3 mt-5">
-                <div class="text-xxs md:text-xs">Есть аккаунт? <a href="{{route('login')}}"
+                <div class="text-xxs md:text-xs">Есть аккаунт? <a href="{{route('login.show')}}"
                                                                   class="text-white hover:text-white/70 font-bold underline underline-offset-4">Войти</a>
                 </div>
             </div>
