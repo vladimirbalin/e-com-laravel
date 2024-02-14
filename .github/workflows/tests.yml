@@ -42,7 +42,10 @@ jobs:
       - name: Install npm
         run: |
           npm install
-          | npm run build
+
+      - name: Build js dependencies
+        run: |
+          npm run build
 
       - name: Run test suite
         run: |
