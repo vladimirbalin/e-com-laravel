@@ -1,11 +1,17 @@
-# Installing
 ```
-php artisan storage:link
+composer install
 ```
 ```
 php artisan migrate
 ```
-
-# Deploy
+```
+php artisan storage:link
+```
+```
+npm i
+```
+```
+npm run build
+```
 
 
