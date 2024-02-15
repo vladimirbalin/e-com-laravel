@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\PasswordUpdatedListener;
 use App\Listeners\RegisteredListener;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
             RegisteredListener::class
 //            SendEmailVerificationNotification::class,
         ],
+        PasswordReset::class => [
+            PasswordUpdatedListener::class
+        ]
     ];
 
     /**
