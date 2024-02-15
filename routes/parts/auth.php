@@ -8,21 +8,22 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/login', 'showLoginPage')->name('login.show');
-    Route::get('/login-mail', 'showMailLoginPage')->name('login.mail.show');
-    Route::post('/login', 'handle')->name('login.handle');
-
-    Route::delete('/logout', 'logout')->name('logout');
-});
-
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'showRegisterPage')->name('register.show');
-    Route::get('/register-mail', 'showMailRegisterPage')->name('register.mail.show');
-    Route::post('/register', 'handle')->name('register.handle');
-});
-
 Route::middleware('guest')->group(function () {
+
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('/login', 'showLoginPage')->name('login.show');
+        Route::get('/login-mail', 'showMailLoginPage')->name('login.mail.show');
+        Route::post('/login', 'handle')->name('login.handle');
+
+        Route::delete('/logout', 'logout')->name('logout')->withoutMiddleware('guest');
+    });
+
+    Route::controller(RegisterController::class)->group(function () {
+        Route::get('/register', 'showRegisterPage')->name('register.show');
+        Route::get('/register-mail', 'showMailRegisterPage')->name('register.mail.show');
+        Route::post('/register', 'handle')->name('register.handle');
+    });
+
     Route::get('/forgot-password', [ForgotPasswordController::class, 'page'])->name('forgot-password.show');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'handle'])->name('forgot-password.handle');
 
