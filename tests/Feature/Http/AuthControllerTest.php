@@ -2,18 +2,19 @@
 
 namespace Http;
 
-use App\Listeners\RegisteredListener;
 use Database\Factories\UserFactory;
 use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Src\Domain\Auth\Models\User;
 use Src\Support\Flash\Flash;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -60,10 +61,8 @@ class AuthControllerTest extends TestCase
         $user = $this->userFactory()->withEmail('valid@mail.com')->create();
 
         $payload = [
-            'name' => $user->name,
             'email' => $user->email,
             'password' => 'password',
-            'password_confirmation' => 'password',
         ];
 
         $response = $this->post(route('login.handle'), $payload);
@@ -74,6 +73,51 @@ class AuthControllerTest extends TestCase
 
         $response->assertRedirect(route('home'));
         $this->assertAuthenticatedAs($user);
+    }
+
+    #[DataProvider('providerInvalidCredentials')]
+    public function test_login_post_invalid(string $email, string $password): void
+    {
+        Event::fake();
+
+        $this->userFactory()->withEmail('valid@mail.com')->create();
+
+        $this->post(route('login.handle'), ['email' => $email, 'password' => $password])
+            ->assertStatus(302)
+            ->assertSessionHasErrors('email');
+
+        Event::assertNotDispatched(Authenticated::class);
+
+        $this->assertGuest();
+    }
+
+    public static function providerInvalidCredentials(): array
+    {
+        return [
+            ['invalid-email-example-com', 'password'],
+            ['valid@mail.com', 'invalid-password'],
+            ['not-registered@mail.com', 'password'],
+            ['not-registered@mail.com', 'invalid-password'],
+        ];
+    }
+
+    #[DataProvider('invalidMethodsLoginHandle')]
+    public function test_login_post_invalid_method(string $method): void
+    {
+        $user = $this->userFactory()->withEmail('valid@mail.com')->create();
+        $payload = [
+            'email' => $user->email,
+            'password' => 'password',
+        ];
+        $this->{$method}(route('login.handle'), $payload)
+            ->assertStatus(Response::HTTP_METHOD_NOT_ALLOWED);
+
+        $this->assertGuest();
+    }
+
+    public static function invalidMethodsLoginHandle(): array
+    {
+        return [['patch'], ['put'], ['delete']];
     }
 
     public function test_register_post_success(): void
@@ -106,7 +150,7 @@ class AuthControllerTest extends TestCase
             ->assertViewIs('auth.login-mail');
     }
 
-    public function test_logout()
+    public function test_logout_success()
     {
         $user = $this->userFactory()->create();
         $this->actingAs($user);
@@ -147,17 +191,16 @@ class AuthControllerTest extends TestCase
             ->assertSee($token);
     }
 
-    public function test_reset_password_post()
+    public function test_reset_password_handle()
     {
+        Event::fake();
         $user = $this->userFactory()->create();
         $token = Password::createToken($user);
-        $this->assertTrue(Password::tokenExists($user, $token));
 
-        $newPassword = Str::random(8);
         $payload = [
             'email' => $user->email,
             'token' => $token,
-            'password' => $newPassword,
+            'password' => $newPassword = Str::random(8),
             'password_confirmation' => $newPassword,
         ];
 
@@ -165,11 +208,9 @@ class AuthControllerTest extends TestCase
             ->assertRedirect()
             ->assertSessionHas(Flash::MESSAGE_KEY, __('passwords.reset'));
 
-//        Event::fake();
-//        Event::assertDispatched(PasswordReset::class);
+        Event::assertDispatched(PasswordReset::class);
 
         $user->refresh();
         $this->assertTrue(Hash::check($newPassword, $user->password));
     }
-
 }

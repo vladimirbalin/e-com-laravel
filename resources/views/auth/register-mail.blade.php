@@ -16,6 +16,7 @@
             name="name"
             :isError="$errors->has('name')"
             type="text"
+            value="{{old('name')}}"
             placeholder="{{__('Имя и фамилия')}}"/>
         @error('name')
         <x-forms.error>{{ $message }}</x-forms.error>
@@ -23,6 +24,7 @@
 
         <x-forms.text-input
             name="email"
+            value="{{old('email')}}"
             :isError="$errors->has('email')"
             type="email"
             placeholder="{{__('E-mail')}}"/>
