@@ -12,8 +12,10 @@ class HomeController extends Controller
     public function __invoke()
     {
         $categories = Category::limit(10)->get();
+
         $brands = Brand::limit(6)->get();
-        $products = Product::limit(8)->get();
+
+        $products = Product::forMainPage()->orderBy('sorting')->limit(8)->get();
 
         return view('welcome', compact(
             'categories', 'brands', 'products'));

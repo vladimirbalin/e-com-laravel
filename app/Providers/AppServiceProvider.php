@@ -9,6 +9,9 @@ use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
+
+        $this->app->bind(
+            ImageManager::class,
+            function(){
+                return new ImageManager(new Driver());
+            }
+        );
     }
 
     /**
