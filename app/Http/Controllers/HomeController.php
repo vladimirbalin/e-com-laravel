@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function __invoke()
     {
-        return view('welcome');
+        $categories = Category::limit(10)->get();
+        $brands = Brand::limit(6)->get();
+        $products = Product::limit(8)->get();
+
+        return view('welcome', compact(
+            'categories', 'brands', 'products'));
     }
 }
