@@ -27,7 +27,15 @@ class ThumbnailController extends Controller
         $storage = Storage::disk('images');
 
         $originalPath = "$dir/$file";
-        $newPath = "$dir/$method/$size";
+
+        if (str_contains($file, '/')) {
+            [$incDir, $file] = explode('/', $file);
+
+            $newPath = "$dir/$method/$size/$incDir";
+        } else {
+            $newPath = "$dir/$method/$size";
+        }
+
         $fullPathWithFilename = "$newPath/$file";
 
         if (! $storage->exists($newPath)) {

@@ -15,20 +15,24 @@ class SocialAuthController extends Controller
     {
         try {
             return Socialite::driver($driver)->redirect();
-        } catch (Throwable $e) {
-            throw new DomainException('Драйвер не поддерживается. ' . $e->getMessage());
+        } catch (Throwable) {
+            throw new DomainException("Драйвер $driver не поддерживается.");
         }
     }
 
     public function callback(string $driver)
     {
-        $socialNetworkUser = Socialite::driver($driver)->user();
+        try {
+            $socialNetworkUser = Socialite::driver($driver)->user();
+        } catch (Throwable) {
+            throw new DomainException("Драйвер $driver не поддерживается.");
+        }
 
         $user = User::updateOrCreate([
-            'github_id' => $socialNetworkUser->id,
+            'github_id' => $socialNetworkUser->getId(),
         ], [
-            'name' => $socialNetworkUser->name,
-            'email' => $socialNetworkUser->email,
+            'name' => $socialNetworkUser->getName(),
+            'email' => $socialNetworkUser->getEmail(),
             'password' => bcrypt(str()->random(20))
         ]);
 

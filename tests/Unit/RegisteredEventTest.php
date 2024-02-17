@@ -14,8 +14,6 @@ class RegisteredEventTest extends TestCase
 
     public function test_send_welcome_notification()
     {
-        Notification::fake();
-
         $payload = [
             'name' => 'Test',
             'email' => 'testing@stepsel.ru',
