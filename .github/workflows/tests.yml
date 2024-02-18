@@ -33,7 +33,6 @@ jobs:
       - name: Copy .env file
         run: |
           cp .env.ci .env
-          cp .env.ci .env.testing
 
       - name: Run composer
         run: |
@@ -50,16 +49,8 @@ jobs:
       - name: Run test suite
         run: |
           php artisan test
-#        env:
-#          DB_DATABASE: cicd_testing
-
-#      - name: Run Larastan
-#        run: |
-#          ./vendor/bin/phpstan analyse
-#
-#      - name: Run Pint
-#        run: |
-#          ./vendor/bin/pint --test
+        env:
+          DB_DATABASE: cicd_testing
 
     services:
       mysql:
