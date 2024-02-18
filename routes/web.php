@@ -6,9 +6,9 @@ use App\Http\Controllers\ThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
-Route::get('/thumbnails/{dir}/{method}/{size}/{file}', ThumbnailController::class)
-    ->name('thumbnail')
-    ->where('file', '.*');
+Route::get('/thumbnails/{dir}/{method}/{size}/{folder}/{file?}', ThumbnailController::class)
+    ->name('thumbnail');
+
 Route::get('/products', function (){
     $product = \App\Models\Product::inRandomOrder()->first();
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Model\HasThumbnail;
 use App\Traits\Model\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ class Brand extends Model
 {
     use HasFactory;
     use Sluggable;
+    use HasThumbnail;
 
     protected $fillable = [
         'title',
@@ -21,5 +23,15 @@ class Brand extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    protected function thumbnailDir(): string
+    {
+        return 'brands';
+    }
+
+    protected function hasSubfolder(): bool
+    {
+        return false;
     }
 }

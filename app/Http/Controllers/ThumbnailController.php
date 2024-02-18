@@ -3,56 +3,44 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
+use Src\Domain\Product\Actions\ThumbnailGenerateAction;
+use Src\Domain\Product\DTOs\ThumbnailGenerateDto;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ThumbnailController extends Controller
 {
-    public function __construct(private readonly ImageManager $image)
-    {
+    public function __construct(
+        private readonly ThumbnailGenerateAction $thumbnailGenerate
+    ) {
     }
 
     public function __invoke(
         string  $dir,
         string  $method,
         string  $size,
-        string  $file,
-        Request $request
+        string  $folder,
+        ?string $file = null,
     ): BinaryFileResponse {
         $this->validateSize($size);
 
         $storage = Storage::disk('images');
 
-        $originalPath = "$dir/$file";
-
-        if (str_contains($file, '/')) {
-            [$incDir, $file] = explode('/', $file);
-
-            $newPath = "$dir/$method/$size/$incDir";
-        } else {
-            $newPath = "$dir/$method/$size";
-        }
-
-        $fullPathWithFilename = "$newPath/$file";
+        // if $file is null, than folder variable contains filename
+        $originalPath = is_null($file) ? "$dir/$folder" : "$dir/$folder/$file";
+        $newPath = is_null($file) ? "$dir/$method/$size" : "$dir/$method/$size/$folder";
+        $newPathWithFilename = is_null($file) ? "$dir/$method/$size/$folder" : "$dir/$method/$size/$folder/$file";
 
         if (! $storage->exists($newPath)) {
             $storage->makeDirectory($newPath);
         }
 
-        if (! $storage->exists($fullPathWithFilename)) {
-            $image = $this->image->read($storage->path($originalPath));
-
-            [$width, $height] = explode('x', $size);
-
-            $image->{$method}((int) $width, (int) $height);
-
-            $image->save($storage->path($fullPathWithFilename));
+        if (! $storage->exists($newPathWithFilename)) {
+            $dto = new ThumbnailGenerateDto($size, $method, $originalPath, $newPathWithFilename);
+            $this->thumbnailGenerate->handle($dto);
         }
 
-        return response()->file($storage->path($fullPathWithFilename));
+        return response()->file($storage->path($newPathWithFilename));
     }
 
     private function validateSize(string $size): void

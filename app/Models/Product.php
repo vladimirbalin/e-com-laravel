@@ -55,4 +55,9 @@ class Product extends Model
             get: fn ($value, array $attributes) => Number::currency($attributes['price'] / 100, 'RUB', 'ru'),
         );
     }
+
+    protected function hasSubfolder(): bool
+    {
+        return true;
+    }
 }

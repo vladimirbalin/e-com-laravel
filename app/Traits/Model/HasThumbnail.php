@@ -9,13 +9,18 @@ trait HasThumbnail
 {
     abstract protected function thumbnailDir(): string;
 
+    abstract protected function hasSubfolder(): bool;
+
     public function makeThumbnail(string $size, string $method = 'resize'): string
     {
+        $filename = File::basename($this->{$this->thumbnailColumn()});
+
         return route('thumbnail', [
             'size' => $size,
             'dir' => $this->thumbnailDir(),
             'method' => $method,
-            'file' => File::basename($this->{$this->thumbnailColumn()})
+            'folder' => $this->hasSubfolder() ? today()->format('Y-m-d') : $filename,
+            'file' => $this->hasSubfolder() ? $filename : null
         ]);
     }
 
