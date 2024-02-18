@@ -5,12 +5,12 @@ namespace Src\Domain\Auth\Actions;
 
 use Illuminate\Auth\Events\Registered;
 use Src\Domain\Auth\Contracts\Register;
-use Src\Domain\Auth\DTO\RegisterDto;
+use Src\Domain\Auth\DTOs\RegisterDto;
 use Src\Domain\Auth\Models\User;
 
 class RegisterAction implements Register
 {
-    public function __invoke(RegisterDto $dto): void
+    public function handle(RegisterDto $dto): void
     {
         $user = User::create([
             'name' => $dto->getName(),

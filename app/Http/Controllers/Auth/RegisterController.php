@@ -9,6 +9,11 @@ use Src\Domain\Auth\Contracts\Register;
 
 class RegisterController extends Controller
 {
+    public function __construct(
+        private readonly Register $registerAction
+    ) {
+    }
+
     public function showRegisterPage()
     {
         return view('auth.register');
@@ -19,9 +24,9 @@ class RegisterController extends Controller
         return view('auth.register-mail');
     }
 
-    public function handle(RegisterFormRequest $request, Register $registerAction)
+    public function handle(RegisterFormRequest $request)
     {
-        $registerAction($request->getDto());
+        $this->registerAction->handle($request->getDto());
 
         return redirect(route('home'));
     }

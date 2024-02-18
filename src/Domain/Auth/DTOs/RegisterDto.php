@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Src\Domain\Auth\DTO;
+namespace Src\Domain\Auth\DTOs;
 
 class RegisterDto
 {
