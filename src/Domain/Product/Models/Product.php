@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Src\Domain\Product\Models;
 
 use App\Casts\PriceCast;
 use App\Observers\ProductObserver;

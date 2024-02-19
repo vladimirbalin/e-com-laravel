@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Product;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Src\Domain\Product\Models\Product;
 
 class SplitProductsToManyFolders extends Command
 {

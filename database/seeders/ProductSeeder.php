@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Src\Domain\Product\Models\Product;
 
 class ProductSeeder extends Seeder
 {

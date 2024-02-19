@@ -2,7 +2,6 @@
 
 namespace Src\Domain\Catalog\Models;
 
-use App\Models\Product;
 use App\Traits\Model\Sluggable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Src\Domain\Catalog\Collections\CategoryCollection;
 use Src\Domain\Catalog\Observers\CategoryObserver;
 use Src\Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
+use Src\Domain\Product\Models\Product;
 
 #[ObservedBy(CategoryObserver::class)]
 class Category extends Model

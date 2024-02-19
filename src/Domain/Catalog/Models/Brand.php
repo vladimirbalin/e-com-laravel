@@ -2,7 +2,6 @@
 
 namespace Src\Domain\Catalog\Models;
 
-use App\Models\Product;
 use App\Traits\Model\HasThumbnail;
 use App\Traits\Model\Sluggable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -11,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Src\Domain\Catalog\Observers\BrandObserver;
 use Src\Domain\Catalog\QueryBuilders\BrandQueryBuilder;
+use Src\Domain\Product\Models\Product;
 
 #[ObservedBy(BrandObserver::class)]
 class Brand extends Model
