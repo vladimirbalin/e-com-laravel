@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
+use Src\Domain\Catalog\ViewModels\BrandViewModel;
+use Src\Domain\Catalog\ViewModels\CategoryViewModel;
+use Src\Domain\Product\ViewModels\ProductViewModel;
 
 class HomeController extends Controller
 {
+    public function __construct(
+        private readonly CategoryViewModel $categoryViewModel,
+        private readonly BrandViewModel    $brandViewModel,
+        private readonly ProductViewModel  $productViewModel,
+
+    ) {
+    }
+
     public function __invoke()
     {
-        $categories = Category::limit(10)->get();
+        $categories = $this->categoryViewModel->homePage();
+        $brands = $this->brandViewModel->homePage();
+        $products = $this->productViewModel->homePage();
 
-        $brands = Brand::limit(6)->get();
-
-        $products = Product::forMainPage()->orderBy('sorting')->limit(8)->get();
-
-        return view('welcome', compact(
-            'categories', 'brands', 'products'));
+        return view('welcome',
+            compact('categories', 'brands', 'products'));
     }
 }
