@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 use Src\Domain\Auth\DTOs\RegisterDto;
+use Src\Support\ValueObjects\Email;
+use Src\Support\ValueObjects\UserName;
 
 class RegisterFormRequest extends FormRequest
 {
@@ -30,8 +32,8 @@ class RegisterFormRequest extends FormRequest
     public function getDto(): RegisterDto
     {
         return new RegisterDto(
-            $this->get('name'),
-            $this->get('email'),
+            new UserName($this->get('name')),
+            new Email($this->get('email')),
             $this->get('password'),
         );
     }

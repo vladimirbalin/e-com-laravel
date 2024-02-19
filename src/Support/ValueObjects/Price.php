@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Src\Support\ValueObjects;
 
-
 use Src\Support\Exceptions\CurrencyNotAllowed;
 use Src\Support\Exceptions\PriceMustNotBeLessThanZero;
 use Stringable;

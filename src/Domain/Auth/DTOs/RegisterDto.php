@@ -3,16 +3,19 @@ declare(strict_types=1);
 
 namespace Src\Domain\Auth\DTOs;
 
-class RegisterDto
+use Src\Support\ValueObjects\Email;
+use Src\Support\ValueObjects\UserName;
+
+readonly class RegisterDto
 {
     public function __construct(
-        private string $name,
-        private string $email,
-        private string $password,
+        private UserName $name,
+        private Email    $email,
+        private string   $password,
     ) {
     }
 
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email;
     }
@@ -22,7 +25,7 @@ class RegisterDto
         return $this->password;
     }
 
-    public function getName(): string
+    public function getName(): UserName
     {
         return $this->name;
     }

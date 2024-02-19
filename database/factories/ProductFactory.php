@@ -4,12 +4,15 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Src\Domain\Catalog\Models\Brand;
+use Src\Domain\Product\Models\Product;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Src\Domain\Product\Models\Product>
  */
 class ProductFactory extends Factory
 {
+    protected $model = Product::class;
+
     public function definition(): array
     {
         return [

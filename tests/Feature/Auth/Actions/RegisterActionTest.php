@@ -5,6 +5,8 @@ namespace Tests\Feature\Auth\Actions;
 
 use Src\Domain\Auth\Contracts\Register;
 use Src\Domain\Auth\DTOs\RegisterDto;
+use Src\Support\ValueObjects\Email;
+use Src\Support\ValueObjects\UserName;
 use Tests\TestCase;
 
 class RegisterActionTest extends TestCase
@@ -18,7 +20,7 @@ class RegisterActionTest extends TestCase
 
         $action = app(Register::class);
 
-        $action->handle(new RegisterDto('name', $email, '12345678'));
+        $action->handle(new RegisterDto(new UserName('name'), new Email($email), '12345678'));
 
         $this->assertDatabaseHas('users', [
             'email' => $email
