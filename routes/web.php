@@ -9,10 +9,5 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('/thumbnails/{dir}/{method}/{size}/{folder}/{file?}', ThumbnailController::class)
     ->name('thumbnail');
 
-Route::get('/products', function (){
-    $product = \App\Models\Product::inRandomOrder()->first();
-
-    return $product->makeThumbnail('150x150');
-})->name('products');
 
 require __DIR__ . '/parts/auth.php';
