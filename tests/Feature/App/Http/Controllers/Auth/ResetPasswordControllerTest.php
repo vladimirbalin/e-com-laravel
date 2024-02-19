@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Feature\Http;
+namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use Database\Factories\UserFactory;
 use Illuminate\Auth\Events\PasswordReset;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Http;
+namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use Database\Factories\UserFactory;
 use DomainException;

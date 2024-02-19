@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Services\Support;
+namespace Tests\Unit\Services;
 
 use Illuminate\Support\Facades\Http;
 use Src\Services\Telegram\TelegramBotApi;

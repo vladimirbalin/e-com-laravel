@@ -1,19 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Feature\Http;
+namespace Tests\Feature\App\Http\Controllers;
 
 use Database\Factories\BrandFactory;
 use Database\Factories\ProductFactory;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Interfaces\ImageInterface;
-use Mockery\MockInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 

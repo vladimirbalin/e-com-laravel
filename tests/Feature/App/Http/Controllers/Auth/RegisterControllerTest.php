@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Feature\Http;
+namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use App\Listeners\RegisteredListener;
 use Illuminate\Auth\Events\Registered;
