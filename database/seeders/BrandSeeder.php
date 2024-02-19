@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
 use Illuminate\Database\Seeder;
+use Src\Domain\Catalog\Models\Brand;
 
 class BrandSeeder extends Seeder
 {

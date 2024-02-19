@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Src\Domain\Catalog\Models\Brand;
+use Src\Domain\Catalog\Models\Category;
 
 class DatabaseSeeder extends Seeder
 {
