@@ -11,6 +11,7 @@ class CategoryObserver
     private function forget(): void
     {
         Cache::forget('categories_main_page');
+        Cache::forget('categories_catalog_page');
     }
 
     public function saved(Category $category): void

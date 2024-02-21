@@ -20,4 +20,16 @@ class CategoryViewModel
                 ->alphabet();
         });
     }
+
+    public function catalogPage(): Collection|array
+    {
+        return Cache::rememberForever('categories_catalog_page', function () {
+            return Category::select(['id', 'title', 'slug'])
+                ->forMainPage()
+                ->orderBy('sorting')
+                ->limit(10)
+                ->get()
+                ->alphabet();
+        });
+    }
 }

@@ -8,4 +8,5 @@ return [
     'register_mail' => 'Sign up email',
     'forgot_password' => 'Reset password',
     'reset_password' => 'Update password',
+    'catalog' => 'Catalog',
 ];

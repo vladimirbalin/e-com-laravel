@@ -8,4 +8,6 @@ return [
     'register_mail' => 'Регистрация с email',
     'forgot_password' => 'Восстановить пароль',
     'reset_password' => 'Обновить пароль',
+    'catalog' => 'Каталог',
+
 ];

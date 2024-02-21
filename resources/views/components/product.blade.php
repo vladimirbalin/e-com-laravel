@@ -1,3 +1,4 @@
+<?php /** @var \Src\Domain\Product\Models\Product $product */ ?>
 <!-- Product card -->
 <div class="product-card flex flex-col rounded-3xl bg-card">
     <a href="#" class="product-card-photo overflow-hidden h-[320px] rounded-3xl">
@@ -7,6 +8,7 @@
         <h3 class="text-sm lg:text-md font-black"><a href="#" class="inline-block text-white hover:text-pink">{{$product->title}}</a></h3>
         <div class="mt-auto pt-6">
             <div class="mb-3 text-sm font-semibold">{{ $product->price }}</div>
+            <div class="mb-3 text-sm font-semibold">{{ $product->brand->title }}</div>
             <div class="flex flex-wrap items-center gap-4">
                 <a href="#" class="w-[56px] !h-[56px] !px-0 btn btn-pink">
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 52 52">

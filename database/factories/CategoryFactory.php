@@ -15,9 +15,9 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => ucfirst($this->faker->words(2, true)),
+            'title' => ucfirst($this->faker->word()),
             'thumbnail' => null,
-            'is_on_the_main_page' => $this->faker->boolean(10),
+            'is_on_the_main_page' => $this->faker->boolean(40),
             'sorting' => $this->faker->numberBetween(1, 999)
         ];
     }

@@ -15,7 +15,7 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => ucfirst($this->faker->word()),
+            'title' => ucfirst($this->faker->unique()->word()),
             'thumbnail' => $this->faker->fixturesImage('brands', 'images/brands'),
             'is_on_the_main_page' => $this->faker->boolean(25),
             'sorting' => $this->faker->numberBetween(1, 999)

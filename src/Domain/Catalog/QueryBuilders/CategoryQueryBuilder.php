@@ -11,4 +11,9 @@ class CategoryQueryBuilder extends Builder
     {
         return $this->where('is_on_the_main_page', true);
     }
+
+    public function whereCategoryId(int $categoryId): Builder
+    {
+        return $this->where('categories.id', $categoryId);
+    }
 }

@@ -11,6 +11,7 @@ class BrandObserver
     private function forget(): void
     {
         Cache::forget('brands_main_page');
+        Cache::forget('brands_catalog_page');
     }
 
     public function saved(Brand $brand): void
