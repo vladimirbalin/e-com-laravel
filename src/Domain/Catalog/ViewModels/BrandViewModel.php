@@ -38,14 +38,15 @@ class BrandViewModel
 
     private function filtersForProducts($query, $category): void
     {
-        $query->whereHas('categories',
-            fn (Builder $q) => $q->when($category->exists,
-                fn (Builder $q) => $q->whereCategoryId($category->id)
-            ))
+        $query
+            ->whereHas('categories',
+                fn (Builder $q) => $q->when($category->exists,
+                    fn (Builder $q) => $q->whereCategoryId($category->id)
+                ))
             ->when(request('filter.price'), function (Builder $query) {
                 return $query->whereBetween('price',
-                    [(new Price(request('filter.price.from', 0) * 100))->getPreparedValue(),
-                        (new Price(request('filter.price.to', 14200000) * 100))->getPreparedValue()]
+                    [(new Price(request('filter.price.from', 0) * 100))->getValue(),
+                        (new Price(request('filter.price.to', 14200000) * 100))->getValue()]
                 );
             });
     }

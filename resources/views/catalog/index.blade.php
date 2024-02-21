@@ -138,7 +138,7 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <div class="text-body text-xxs sm:text-xs">Найдено: {{$products->total()}} товаров</div>
+                                <div class="text-body text-xxs sm:text-xs">Найдено: {{$products->total()}} {{trans_choice('товар|товара|товаров', $products->total())}}</div>
                             </div>
                             <div x-data="{}" class="flex flex-col sm:flex-row sm:items-center gap-3">
                                 <span class="text-body text-xxs sm:text-xs">Сортировать по</span>
