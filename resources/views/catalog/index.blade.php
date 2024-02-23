@@ -144,12 +144,12 @@
                                 <span class="text-body text-xxs sm:text-xs">Сортировать по</span>
                                 <form x-ref="sortForm" action="{{route('catalog.index', $category)}}" method="get">
                                     <select
-                                        x-on:change="$refs.sortForm.submit()"
-                                        name="filter[sort]"
-                                        class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xxs sm:text-xs shadow-transparent outline-0 transition">
+                                            x-on:change="$refs.sortForm.submit()"
+                                            name="filters[sort]"
+                                            class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xxs sm:text-xs shadow-transparent outline-0 transition">
                                         @foreach($sorting as $value => $name)
                                             <option value="{{$value}}"
-                                                    @selected($value === request('filter.sort')) class="text-dark">
+                                                    @selected($value === request('filters.sort')) class="text-dark">
                                                 {{$name}}
                                             </option>
                                         @endforeach

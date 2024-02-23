@@ -34,8 +34,8 @@ class ProductQueryBuilder extends Builder
     public function sorted(): Builder
     {
         return $this
-            ->when(request('filter.sort'), function (Builder $query) {
-                $sort = request()->str('filter.sort');
+            ->when(request('filters.sort'), function (Builder $query) {
+                $sort = request()->str('filters.sort');
 
                 if (! $sort->contains(['price', 'title'])) {
                     return $query;
