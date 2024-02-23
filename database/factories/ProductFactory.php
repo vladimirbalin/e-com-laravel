@@ -21,7 +21,8 @@ class ProductFactory extends Factory
             'thumbnail' => $this->faker->fixturesImage('products', 'images/products/' . today()->format('Y-m-d')),
             'price' => $this->faker->numberBetween(100000, 10000000),
             'sorting' => $this->faker->numberBetween(1, 999),
-            'is_on_the_main_page' => $this->faker->boolean(25)
+            'is_on_the_main_page' => $this->faker->boolean(25),
+            'text' => $this->faker->realText()
         ];
     }
 

@@ -23,15 +23,14 @@ class ProductViewModel
         return $this->remember('product_main_page', $callback);
     }
 
-    public function catalogPage(Category $category): LengthAwarePaginator
+    public function catalogPage(): LengthAwarePaginator
     {
         return Product::query()
-            ->with('brand:id,title')
             ->select(['id', 'title', 'slug', 'thumbnail', 'price', 'brand_id'])
-            ->when($category->exists, function (Builder $query) use ($category) {
-                $query->whereHas('categories', fn ($q) => $q->where('categories.id', $category->id));
-            })
+            ->with('brand:id,title')
             ->filtered()
+            ->when(request('filters.search'),
+                fn (Builder $query) => $query->whereFullText(['title', 'text'], request('filters.search')))
             ->sorted()
             ->paginate(9);
     }
