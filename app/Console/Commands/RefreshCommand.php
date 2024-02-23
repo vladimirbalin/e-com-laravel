@@ -35,6 +35,7 @@ class RefreshCommand extends Command
         $this->call('migrate:fresh',
             ['--seed' => true]
         );
+        $this->call('optimize:clear');
 
         return self::SUCCESS;
     }
