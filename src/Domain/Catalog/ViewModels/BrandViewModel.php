@@ -22,32 +22,30 @@ class BrandViewModel
         });
     }
 
-    public function catalogPage(Category $category): Collection|array
+    public function catalogPage(): Collection|array
     {
         return Brand::query()
             ->select(['id', 'title'])
-            ->whereHas('products', function (Builder $q) use ($category) {
-                $this->filtersForProducts($q, $category);
-            })
-            ->withCount(['products' => function ($q) use ($category) {
-                $this->filtersForProducts($q, $category);
-            }])
-            ->orderByDesc('products_count')
+//            ->when($category->exists, function (Builder $query) use ($category) {
+//                $query->whereRelation('products.categories', 'categories.id', $category->id);
+//            })
+//            ->when(request('filter.price'), function (Builder $query) {
+//                $from = (new Price(request('filter.price.from', 0) * 100))->getValue();
+//                $to = (new Price(request('filter.price.to', 14200000) * 100))->getValue();
+//
+//                $query->whereHas('products', fn ($q) => $q->whereBetween('price', [$from, $to]));
+//            })
+//            ->withCount(['products' => function ($q) use ($category) {
+//                $q->when($category->exists, function (Builder $query) use ($category) {
+//                    $query->whereRelation('categories', 'categories.id', $category->id);
+//                })->when(request('filter.price'), function (Builder $query) {
+//                    $from = (new Price(request('filter.price.from', 0) * 100))->getValue();
+//                    $to = (new Price(request('filter.price.to', 14200000) * 100))->getValue();
+//
+//                    $query->whereBetween('price', [$from, $to]);
+//                });
+//            }])
+//            ->orderByDesc('products_count')
             ->orderBy('title')->get();
-    }
-
-    private function filtersForProducts($query, $category): void
-    {
-        $query
-            ->whereHas('categories',
-                fn (Builder $q) => $q->when($category->exists,
-                    fn (Builder $q) => $q->whereCategoryId($category->id)
-                ))
-            ->when(request('filter.price'), function (Builder $query) {
-                return $query->whereBetween('price',
-                    [(new Price(request('filter.price.from', 0) * 100))->getValue(),
-                        (new Price(request('filter.price.to', 14200000) * 100))->getValue()]
-                );
-            });
     }
 }

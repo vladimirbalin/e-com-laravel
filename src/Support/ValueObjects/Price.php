@@ -30,7 +30,6 @@ class Price implements Stringable
     /**
      * Get value in minor units (cents, kopeiki)
      * Raw value
-     * @return int
      */
     public function getValue(): int
     {
@@ -40,7 +39,6 @@ class Price implements Stringable
     /**
      * Get calculated price (Not in "minor units")
      * Dividing raw value by precision
-     * @return float|int
      */
     public function getPreparedValue(): float|int
     {
@@ -50,6 +48,14 @@ class Price implements Stringable
     public function getFormattedValue(): string
     {
         return number_format($this->getPreparedValue(), 2, '.', ' ');
+    }
+
+    /**
+     * Take just integer part of value
+     */
+    public function getIntegerFormattedValue(): int
+    {
+        return (int) number_format($this->getValue(), 0, '.', '');
     }
 
     public function getFormattedValueWithSymbol(): string

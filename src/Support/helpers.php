@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Src\Domain\Catalog\Filters\FilterManager;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
 use Src\Support\Flash\Flash;
 
@@ -10,11 +11,15 @@ if (! function_exists('flash')) {
         return app(Flash::class);
     }
 }
-if (! function_exists('max_price')) {
-    function max_price(): ?int
+if (! function_exists('max_product_price')) {
+    function max_product_price(): ?int
     {
-        $price = app(ProductQueryBuilder::class)->maxPrice();
-
-        return $price ?? (int) $price;
+        return app(ProductQueryBuilder::class)->maxPrice();
+    }
+}
+if (! function_exists('filters')) {
+    function filters(): array
+    {
+        return app(FilterManager::class)->filters();
     }
 }

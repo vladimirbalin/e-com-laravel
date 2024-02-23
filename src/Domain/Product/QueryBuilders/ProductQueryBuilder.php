@@ -5,6 +5,7 @@ namespace Src\Domain\Product\QueryBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Pipeline;
 use Src\Domain\Product\Models\Product;
 
 class ProductQueryBuilder extends Builder
@@ -16,19 +17,22 @@ class ProductQueryBuilder extends Builder
 
     public function filtered(): Builder
     {
-        return $this
-            ->when(request('filter.brands'), function (Builder $query) {
-                return $query->whereIn('brand_id', request('filter.brands'));
-            })
-            ->when(request('filter.price'), function (Builder $query) {
-                return $query->whereBetween('price',
-                    [request('filter.price.from', 0) * 100,
-                        request('filter.price.to', 14200000) * 100]
-                );
-            })
-            ->when(request('category'), function (Builder $query) {
-                return $query->whereHas('categories', fn ($q) => $q->where('categories.id', request('category')->id));
-            });
+        return Pipeline::send($this)
+            ->through(filters())
+            ->thenReturn();
+//        return $this
+//            ->when(request('filter.brands'), function (Builder $query) {
+//                return $query->whereIn('brand_id', request('filter.brands'));
+//            })
+//            ->when(request('filter.price'), function (Builder $query) {
+//                return $query->whereBetween('price',
+//                    [request('filter.price.from', 0) * 100,
+//                        request('filter.price.to', 14200000) * 100]
+//                );
+//            })
+//            ->when(request('category'), function (Builder $query) {
+//                return $query->whereHas('categories', fn ($q) => $q->where('categories.id', request('category')->id));
+//            });
     }
 
     public function sorted(): Builder

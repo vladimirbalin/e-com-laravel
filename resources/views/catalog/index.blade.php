@@ -35,69 +35,37 @@
                     <aside class="basis-2/5 xl:basis-1/4">
                         <form action="{{route('catalog.index', $category)}}"
                               class="overflow-auto max-h-[320px] lg:max-h-[100%] space-y-10 p-6 2xl:p-8 rounded-2xl bg-card">
+                            <input type="hidden" name="filters[sort]" value="{{request('filters.sort')}}">
                             <!-- Filter item -->
-                            <div>
-                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Цена</h5>
-                                <div class="flex items-center justify-between gap-3 mb-2">
-                                    <span class="text-body text-xxs font-medium">От, ₽</span>
-                                    <span class="text-body text-xxs font-medium">До, ₽</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <input
-                                        name="filter[price][from]"
-                                        type="number"
-                                        class="w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                        value="{{request('filter.price.from', 0)}}" placeholder="От">
-                                    <span class="text-body text-sm font-medium">–</span>
-                                    <input
-                                        name="filter[price][to]"
-                                        type="number"
-                                        class="w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                        value="{{request('filter.price.to', max_price())}}" placeholder="До">
-                                </div>
-                            </div>
+                            @foreach(filters() as $filter)
+                                    <?php /** @var \Src\Domain\Catalog\Filters\AbstractFilter $filter */ ?>
+                                {!! $filter !!}
+                            @endforeach
+
                             <!-- Filter item -->
-                            <div>
-                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Бренд ({{$brands->count()}})</h5>
-                                @foreach($brands as $brand)
-                                        <?php /** @var \Src\Domain\Catalog\Models\Brand $brand */ ?>
-                                    <div class="form-checkbox">
-                                        <input type="checkbox"
-                                               id="brand-{{$brand->id}}"
-                                               name="filter[brands][{{$brand->id}}]"
-                                               value="{{$brand->id}}"
-                                            @checked(request('filter.brands.'.$brand->id))
-                                        >
-                                        <label for="brand-{{$brand->id}}"
-                                               class="form-checkbox-label">{{$brand->title}}
-                                            ({{$brand->products_count}})
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <!-- Filter item -->
-{{--                            <div>--}}
-{{--                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Цвет</h5>--}}
-{{--                                <div class="form-checkbox">--}}
-{{--                                    <input type="checkbox" id="filters-item-9">--}}
-{{--                                    <label for="filters-item-9" class="form-checkbox-label">Белый</label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <!-- Filter item -->--}}
-{{--                            <div>--}}
-{{--                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Подсветка</h5>--}}
-{{--                                <div class="form-checkbox">--}}
-{{--                                    <input type="checkbox" id="filters-item-7">--}}
-{{--                                    <label for="filters-item-7" class="form-checkbox-label">Без подсветки</label>--}}
-{{--                                </div>--}}
-{{--                                <div class="form-checkbox">--}}
-{{--                                    <input type="checkbox" id="filters-item-8">--}}
-{{--                                    <label for="filters-item-8" class="form-checkbox-label">С подсветкой</label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            {{--                            <div>--}}
+                            {{--                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Цвет</h5>--}}
+                            {{--                                <div class="form-checkbox">--}}
+                            {{--                                    <input type="checkbox" id="filters-item-9">--}}
+                            {{--                                    <label for="filters-item-9" class="form-checkbox-label">Белый</label>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
+                            {{--                            <!-- Filter item -->--}}
+                            {{--                            <div>--}}
+                            {{--                                <h5 class="mb-4 text-sm 2xl:text-md font-bold">Подсветка</h5>--}}
+                            {{--                                <div class="form-checkbox">--}}
+                            {{--                                    <input type="checkbox" id="filters-item-7">--}}
+                            {{--                                    <label for="filters-item-7" class="form-checkbox-label">Без подсветки</label>--}}
+                            {{--                                </div>--}}
+                            {{--                                <div class="form-checkbox">--}}
+                            {{--                                    <input type="checkbox" id="filters-item-8">--}}
+                            {{--                                    <label for="filters-item-8" class="form-checkbox-label">С подсветкой</label>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
                             <div>
                                 <button type="submit" class="w-full !h-16 btn btn-pink">Поиск</button>
-                                <a href="{{route('catalog.index')}}" class="w-full !h-16 btn btn-outline">Сбросить фильтры</a>
+                                <a href="{{route('catalog.index')}}" class="w-full !h-16 btn btn-outline">Сбросить
+                                    фильтры</a>
                             </div>
                         </form>
                     </aside>
@@ -138,11 +106,20 @@
                                         </svg>
                                     </a>
                                 </div>
-                                <div class="text-body text-xxs sm:text-xs">Найдено: {{$products->total()}} {{trans_choice('товар|товара|товаров', $products->total())}}</div>
+                                <div class="text-body text-xxs sm:text-xs">
+                                    Найдено: {{$products->total()}} {{trans_choice('товар|товара|товаров', $products->total())}}</div>
                             </div>
                             <div x-data="{}" class="flex flex-col sm:flex-row sm:items-center gap-3">
                                 <span class="text-body text-xxs sm:text-xs">Сортировать по</span>
                                 <form x-ref="sortForm" action="{{route('catalog.index', $category)}}" method="get">
+                                    @foreach(request('filters') ?? [] as $name => $value)
+                                        @continue($name === 'sort')
+                                        @if(is_array($value))
+                                            @foreach($value as $subName => $v)
+                                                <input type="hidden" name="{{"filters[$name][$subName]"}}" value="{{$v}}">
+                                            @endforeach
+                                        @endif
+                                    @endforeach
                                     <select
                                             x-on:change="$refs.sortForm.submit()"
                                             name="filters[sort]"
@@ -167,7 +144,7 @@
                             </div>
                         @else
                             <div
-                                class="products grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-6 2xl:gap-x-8 gap-y-8 lg:gap-y-10 2xl:gap-y-12">
+                                    class="products grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-6 2xl:gap-x-8 gap-y-8 lg:gap-y-10 2xl:gap-y-12">
                                 @each('components.product', $products, 'product')
                             </div>
                         @endif
