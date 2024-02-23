@@ -171,6 +171,7 @@ return [
         App\Providers\DomainServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\TestingServiceProvider::class,
+        App\Providers\MenuServiceProvider::class,
     ])->toArray(),
 
     /*
