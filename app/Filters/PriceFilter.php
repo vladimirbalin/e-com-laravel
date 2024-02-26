@@ -22,27 +22,34 @@ class PriceFilter extends AbstractFilter
     #[\Override] public function apply(Builder $query): Builder
     {
         return $query->when($this->requestValue(), function (Builder $query) {
-            return $query->whereBetween('price', [$this->from(), $this->to()]);
+            return $query->whereBetween('price', [$this->from()->getValue(), $this->to()->getValue()]);
         });
     }
 
-    private function from(): int
+    public function from(): Price
     {
-        return (new Price($this->requestValue('from', 0) * 100))->getIntegerFormattedValue();
+        return (new Price(
+            $this->requestValue('from', 0) * 100)
+        );
     }
 
-    private function to(): int
+    public function to(): Price
     {
-        return (new Price($this->requestValue('to', max_product_price()) * 100))->getIntegerFormattedValue();
+        return (new Price(
+            $this->requestValue('to', max_product_price()) * 100)
+        );
+    }
+
+    public function values(): array
+    {
+       return [
+          'from' => $this->from()->getPreparedValue(),
+          'to' => $this->to()->getPreparedValue(),
+        ];
     }
 
     #[\Override] public function view(): string
     {
         return 'catalog.filters.price';
-    }
-
-    #[\Override] public function values(): array
-    {
-        // TODO: Implement values() method.
     }
 }

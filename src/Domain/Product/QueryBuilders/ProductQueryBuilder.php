@@ -37,17 +37,19 @@ class ProductQueryBuilder extends Builder
 
     public function sorted(): Builder
     {
-        return $this
-            ->when(request('filters.sort'), function (Builder $query) {
-                $sort = request()->str('filters.sort');
-
-                if (! $sort->contains(['price', 'title'])) {
-                    return $query;
-                }
-
-                $direction = $sort->contains('-') ? 'DESC' : 'ASC';
-                return $query->orderBy($sort->remove('-'), $direction);
-            });
+        return Pipeline::send($this)
+            ->through(sortings())
+            ->thenReturn();
+//            ->when(request('filters.sort'), function (Builder $query) {
+//                $sort = request()->str('filters.sort');
+//
+//                if (! $sort->contains(['price', 'title'])) {
+//                    return $query;
+//                }
+//
+//                $direction = $sort->contains('-') ? 'DESC' : 'ASC';
+//                return $query->orderBy($sort->remove('-'), $direction);
+//            });
     }
 
     public function maxPrice(): int

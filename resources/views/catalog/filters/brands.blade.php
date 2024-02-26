@@ -4,13 +4,13 @@
     @foreach($filter->values() as $id => $label)
         <div class="form-checkbox">
             <input type="checkbox"
-                   id="{{$id}}"
-                   name="{{$filter->name($id)}}"
-                   value="{{$id}}"
+                   id="{{ $id }}"
+                   name="{{ $filter->name($id) }}"
+                   value="{{ $id }}"
                     @checked($filter->requestValue($id))
             >
-            <label for="{{$id}}"
-                   class="form-checkbox-label">{{$label}}
+            <label for="{{ $id }}"
+                   class="form-checkbox-label">{{ $label }}
 {{--                ({{$brand->products_count}})--}}
             </label>
         </div>

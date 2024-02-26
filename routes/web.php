@@ -13,7 +13,8 @@ Route::get('/thumbnails/{dir}/{method}/{size}/{folder}/{file?}', ThumbnailContro
     ->name('thumbnail');
 
 Route::get('/catalog/{category:slug?}', CatalogController::class)
-    ->name('catalog.index');
+    ->name('catalog.index')
+    ->middleware(['catalog-view']);
 
 
 require __DIR__ . '/parts/auth.php';

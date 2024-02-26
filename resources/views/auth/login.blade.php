@@ -12,7 +12,7 @@
     <x-forms.auth-form title="Вход в аккаунт">
         <ul class="space-y-3">
             <li>
-                <a href="{{ route('login.mail.show') }}"
+                <a href="{{ route('login.mail.shows') }}"
                    class="relative flex items-center h-14 px-12 rounded-lg border border-[#A07BF0] bg-white/20 hover:bg-white/20 active:bg-white/10 active:translate-y-0.5">
                     <svg class="shrink-0 absolute left-4 w-5 sm:w-6 h-5 sm:h-6" xmlns="http://www.w3.org/2000/svg"
                          fill="currentColor" viewBox="0 0 20 20">

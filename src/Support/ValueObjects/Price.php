@@ -13,6 +13,13 @@ class Price implements Stringable
         'RUB' => '₽'
     ];
 
+    /**
+     * @param int $value in minor units
+     * @param string $currency
+     * @param int $precision
+     * @throws CurrencyNotAllowed
+     * @throws PriceMustNotBeLessThanZero
+     */
     public function __construct(
         private readonly int    $value,
         private readonly string $currency = 'RUB',
@@ -28,7 +35,7 @@ class Price implements Stringable
     }
 
     /**
-     * Get value in minor units (cents, kopeiki)
+     * Get value in "minor" units (cents, kopeiki)
      * Raw value
      */
     public function getValue(): int
@@ -37,7 +44,7 @@ class Price implements Stringable
     }
 
     /**
-     * Get calculated price (Not in "minor units")
+     * Value in "major" units
      * Dividing raw value by precision
      */
     public function getPreparedValue(): float|int
@@ -45,19 +52,19 @@ class Price implements Stringable
         return $this->value / $this->precision;
     }
 
+    /**
+     * Get value part. "Viewable/readable" price string
+     * @return string
+     */
     public function getFormattedValue(): string
     {
         return number_format($this->getPreparedValue(), 2, '.', ' ');
     }
 
     /**
-     * Take just integer part of value
+     * Get value and currency symbol parts. "Viewable/readable" price string
+     * @return string
      */
-    public function getIntegerFormattedValue(): int
-    {
-        return (int) number_format($this->getValue(), 0, '.', '');
-    }
-
     public function getFormattedValueWithSymbol(): string
     {
         return $this->getFormattedValue() . ' ' . $this->getSymbol();

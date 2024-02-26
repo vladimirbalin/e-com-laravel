@@ -25,18 +25,10 @@ class CatalogController extends Controller
         $brands = $this->brandViewModel->catalogPage($category);
         $products = $this->productViewModel->catalogPage($category);
 
-        $sorting = [
-            '' => 'По умолчанию',
-            'title' => 'По наименованию',
-            'price' => 'От дешевых к дорогим',
-            '-price' => 'От дорогих к дешевым',
-        ];
-
         return view('catalog.index', compact(
                 'categories',
                 'products',
                 'brands',
-                'sorting',
                 'category'
             )
         );

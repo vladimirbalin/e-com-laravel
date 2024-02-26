@@ -16,9 +16,12 @@ abstract class AbstractFilter implements Stringable
      */
     abstract public function key(): string;
 
-    abstract public function apply(Builder $query): Builder;
+    abstract public function apply(Builder $query);
 
-    abstract public function values(): array;
+    public function values(): array
+    {
+        return [];
+    }
 
     abstract public function view(): string;
 
@@ -31,7 +34,7 @@ abstract class AbstractFilter implements Stringable
     }
 
     /**
-     * Returns full string. Example: filters.{key}.{index}
+     * Returns full string for form name attributes. Example: filters.[key].[{index}]
      */
     public function name(?string $index = null): string
     {
@@ -49,9 +52,9 @@ abstract class AbstractFilter implements Stringable
 
     public function __toString(): string
     {
-        return view($this->view())->with([
-            'filter' => $this
-        ])->render();
+        return view($this->view())
+            ->with(array_merge(['filter' => $this], $this->values()))
+            ->render();
     }
 
     public function __invoke(Builder $query, Closure $next)
