@@ -41,6 +41,18 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function optionValues(): BelongsToMany
+    {
+        return $this->belongsToMany(OptionValue::class);
+    }
+
+    public function properties(): BelongsToMany
+    {
+        return $this->belongsToMany(Property::class)
+            ->withTimestamps()
+            ->withPivot('value');
+    }
+
     protected function thumbnailDir(): string
     {
         return 'products';

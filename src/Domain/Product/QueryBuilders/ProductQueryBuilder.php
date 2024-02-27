@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Src\Domain\Product\QueryBuilders;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Pipeline;
 use Src\Domain\Product\Models\Product;
@@ -66,5 +67,20 @@ class ProductQueryBuilder extends Builder
 
             return (int) $maxPrice;
         });
+    }
+
+    public function getPreviouslyWatched(): Collection
+    {
+        $watchedIdsFromSession = session('watched', []);
+
+        $watchedProducts = Product::whereIn('id', $watchedIdsFromSession)
+            ->with('brand');
+
+        if (count($watchedIdsFromSession) > 0) {
+            $ids = implode(',', array_reverse($watchedIdsFromSession));
+            $watchedProducts->orderByRaw("FIELD(id, $ids)");
+        }
+
+        return $watchedProducts->get();
     }
 }
