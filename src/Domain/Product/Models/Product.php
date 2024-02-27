@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Orchid\Screen\AsSource;
 use Src\Domain\Catalog\Models\Brand;
 use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
@@ -21,6 +22,7 @@ class Product extends Model
     use HasFactory;
     use Sluggable;
     use HasThumbnail;
+    use AsSource;
 
     protected $guarded = [];
 
@@ -61,5 +63,10 @@ class Product extends Model
     protected function hasSubfolder(): bool
     {
         return true;
+    }
+
+    public static function baseFolder(): string
+    {
+        return 'products/' . now()->format('Y-m-d');
     }
 }

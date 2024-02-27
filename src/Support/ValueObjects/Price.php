@@ -82,6 +82,6 @@ class Price implements Stringable
 
     public function __toString(): string
     {
-        return $this->getFormattedValueWithSymbol();
+        return (string) $this->getFormattedValue();
     }
 }

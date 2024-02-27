@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Database\Seeders\AdminUserSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +37,7 @@ class RefreshCommand extends Command
             ['--seed' => true]
         );
         $this->call('optimize:clear');
-
+        $this->call(AdminUserSeeder::class);
         return self::SUCCESS;
     }
 }

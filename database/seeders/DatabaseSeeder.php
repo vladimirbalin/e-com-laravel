@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
         BrandFactory::new()->count(25)->create();
 
         Storage::createDirectory('images/products');

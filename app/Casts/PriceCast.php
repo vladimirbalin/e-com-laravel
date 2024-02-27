@@ -13,8 +13,11 @@ class PriceCast implements CastsAttributes
      *
      * @param array<string, mixed> $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): Price
+    public function get(Model $model, string $key, mixed $value, array $attributes): ?Price
     {
+        if (is_null($value)) {
+            return null;
+        }
         // Product price 10000
         return new Price($value);
     }
@@ -27,7 +30,7 @@ class PriceCast implements CastsAttributes
     public function set(Model $model, string $key, mixed $value, array $attributes): int
     {
         if (! $value instanceof Price) {
-            $value = new Price((int) $value);
+            $value = new Price((int) ($value * 100));
         }
 
         return $value->getValue();

@@ -9,4 +9,5 @@ return [
     'forgot_password' => 'Reset password',
     'reset_password' => 'Update password',
     'catalog' => 'Catalog',
+    'products' => 'Products',
 ];

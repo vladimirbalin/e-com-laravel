@@ -20,7 +20,8 @@ class ProductTest extends TestCase
 
         $this->assertInstanceOf(Price::class, $product->price);
 
-        $product->price = 250000;
-        $this->assertEquals(250000, $product->price->getValue());
+        $roubles = 25000;
+        $product->price = $roubles;
+        $this->assertEquals($roubles * 100, $product->price->getValue());
     }
 }
