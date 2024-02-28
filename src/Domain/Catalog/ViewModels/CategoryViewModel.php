@@ -16,8 +16,7 @@ class CategoryViewModel
                 ->forMainPage()
                 ->orderBy('sorting')
                 ->limit(10)
-                ->get()
-                ->alphabet();
+                ->get();
         });
     }
 
