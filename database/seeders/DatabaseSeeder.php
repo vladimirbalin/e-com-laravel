@@ -9,7 +9,9 @@ use Database\Factories\OptionFactory;
 use Database\Factories\OptionValueFactory;
 use Database\Factories\ProductFactory;
 use Database\Factories\PropertyFactory;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\Models\Product;
@@ -17,9 +19,6 @@ use Src\Domain\Product\Models\Property;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
@@ -28,6 +27,12 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        UserFactory::new([
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+        ])->create();
+
         BrandFactory::new()->count(25)->create();
 
         Storage::createDirectory('images/products');
@@ -51,6 +56,5 @@ class DatabaseSeeder extends Seeder
                 $properties->each(
                     fn (Property $property) => $product->properties()->attach($property->id, ['value' => fake()->word()]));
             });
-
     }
 }

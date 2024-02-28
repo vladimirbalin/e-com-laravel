@@ -87,7 +87,7 @@
                                                    value="cards">
                                             <label for="cards"
                                                    class="cursor-pointer inline-flex items-center justify-center w-10 h-10 rounded-md bg-card hover:text-pink
-                                                           @if(session('catalog-view') === 'cards')
+                                                           @if(session('catalog-view') === 'cards' || is_null(session('catalog-view')))
                                                                 text-pink pointer-events-none
                                                            @else
                                                                 text-white

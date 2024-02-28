@@ -15,6 +15,7 @@ use Src\Domain\Catalog\Models\Brand;
 use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
 
+
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
 {
@@ -50,7 +51,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Property::class)
             ->withTimestamps()
-            ->withPivot('value');
+            ->withPivot(['id', 'value']);
     }
 
     protected function thumbnailDir(): string

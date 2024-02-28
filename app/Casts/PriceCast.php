@@ -8,24 +8,25 @@ use Src\Support\ValueObjects\Price;
 
 class PriceCast implements CastsAttributes
 {
-    /**
-     * Cast the given value.
-     *
-     * @param array<string, mixed> $attributes
-     */
-    public function get(Model $model, string $key, mixed $value, array $attributes): Price
+    public function get(Model $model, string $key, mixed $value, array $attributes)
     {
-        // Product price 10000
+        if (
+            str(request()->fullUrl())->contains(['admin', 'livewire'])
+        ) {
+            return $value;
+        }
+
         return new Price($value);
     }
 
-    /**
-     * Prepare the given value for storage.
-     *
-     * @param array<string, mixed> $attributes
-     */
     public function set(Model $model, string $key, mixed $value, array $attributes): int
     {
+        if (
+            str(request()->fullUrl())->contains(['admin', 'livewire'])
+        ) {
+            return $value;
+        }
+
         if (! $value instanceof Price) {
             $value = new Price((int) $value);
         }
