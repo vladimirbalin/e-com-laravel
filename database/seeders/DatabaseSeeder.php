@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
         Storage::createDirectory('images/products');
         CategoryFactory::new()->count(20)->create();
-        ProductFactory::new()->count(500)
+        ProductFactory::new()->count(50)
             ->create();
 
         OptionFactory::new()->count(2)->create();
