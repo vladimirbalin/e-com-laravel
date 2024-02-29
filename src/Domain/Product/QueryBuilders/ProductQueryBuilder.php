@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Pipeline;
+use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\Models\Product;
 
 class ProductQueryBuilder extends Builder
@@ -82,5 +83,11 @@ class ProductQueryBuilder extends Builder
         }
 
         return $watchedProducts->get();
+    }
+
+    public function ofCategory(Category $category)
+    {
+        return $this->when($category->exists,
+            fn (Builder $query) => $query->whereRelation('categories', 'categories.id', $category->getKey()));
     }
 }

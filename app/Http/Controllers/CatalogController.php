@@ -22,7 +22,7 @@ class CatalogController extends Controller
     public function __invoke(Category $category, Request $request)
     {
         $categories = $this->categoryViewModel->homePage();
-        $brands = $this->brandViewModel->catalogPage($category);
+        $brands = $this->brandViewModel->catalogPage();
         $products = $this->productViewModel->catalogPage($category);
 
         return view('catalog.index', compact(

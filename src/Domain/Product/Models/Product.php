@@ -7,12 +7,14 @@ use App\Observers\ProductObserver;
 use App\Traits\Model\HasThumbnail;
 use App\Traits\Model\Sluggable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Src\Domain\Catalog\Models\Brand;
 use Src\Domain\Catalog\Models\Category;
+use Src\Domain\Product\Collections\ProductCollection;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
 
 
@@ -25,11 +27,19 @@ class Product extends Model
 
     protected $guarded = [];
 
-    protected $casts = ['price' => PriceCast::class];
+    protected $casts = [
+        'price' => PriceCast::class,
+        'json_properties' => 'array'
+    ];
 
     public function newEloquentBuilder($query): ProductQueryBuilder
     {
         return new ProductQueryBuilder($query);
+    }
+
+    public function newCollection(array $models = []): ProductCollection
+    {
+        return new ProductCollection($models);
     }
 
     public function brand(): BelongsTo
@@ -62,5 +72,13 @@ class Product extends Model
     protected function hasSubfolder(): bool
     {
         return true;
+    }
+
+    protected function jsonProperties(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, array $attributes) => $this->json_properties ?? $this->properties->titleToValue(),
+            set: fn ($value) => $value,
+        );
     }
 }

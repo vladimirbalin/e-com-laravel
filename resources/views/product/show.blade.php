@@ -7,9 +7,10 @@
             <ul class="breadcrumbs flex flex-wrap gap-y-1 gap-x-4 mb-6">
                 <li><a href="{{ route('home') }}" class="text-body hover:text-pink text-xs">Главная</a></li>
                 <li><a href="{{ route('catalog.index') }}" class="text-body hover:text-pink text-xs">Каталог</a></li>
-                <li><a href="#" class="text-body hover:text-pink text-xs">Мыши</a></li>
+                <li><a href="{{ route('catalog.index', $product->categories->first()->slug) }}"
+                       class="text-body hover:text-pink text-xs">{{ $product->categories->first()->title}}</a></li>
                 {{--            <li><a href="{{ route('catalog.index', ['category' => $product->ca]) }}" class="text-body hover:text-pink text-xs">Мыши</a></li>--}}
-                <li><span class="text-body text-xs">SteelSeries Aerox 3 Snow</span></li>
+                <li><span class="text-body text-xs">{{ $product->title }}</span></li>
             </ul>
 
             <!-- Main product -->
@@ -68,16 +69,12 @@
                             <div class="text-body text-md md:text-lg font-bold line-through">59 300 ₽</div>
                         </div>
                         <ul class="sm:max-w-[360px] space-y-2 mt-8">
-                            @foreach($product->properties as $property)
+                            @foreach($product->json_properties as $title => $value)
                                 <li class="flex justify-between text-body">
-                                    <strong class="text-white">{{ $property->title }}</strong>
-                                    {{ $property->pivot->value }}
+                                    <strong class="text-white">{{ $title }}</strong>
+                                    {{ $value }}
                                 </li>
                             @endforeach
-                            {{--                        <li class="flex justify-between text-body"><strong class="text-white">Тип сенсора:</strong> Оптический</li>--}}
-                            {{--                        <li class="flex justify-between text-body"><strong class="text-white">DPI мыши:</strong> 18000</li>--}}
-                            {{--                        <li class="flex justify-between text-body"><strong class="text-white">Количество кнопок мыши:</strong> 8</li>--}}
-                            {{--                        <li class="flex justify-between text-body"><strong class="text-white">Подсветка:</strong> RGB</li>--}}
                         </ul>
 
                         <!-- Add to cart -->
@@ -85,28 +82,17 @@
                             <div class="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
                                 @foreach($options as $option => $optionValues)
                                     <div class="flex flex-col gap-2">
-                                        <label for="filter-item-1" class="cursor-pointer text-body text-xxs font-medium">{{ $option }}</label>
+                                        <label for="filter-item-1"
+                                               class="cursor-pointer text-body text-xxs font-medium">{{ $option }}</label>
                                         <select id="filter-item-1"
                                                 class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition">
                                             @foreach($optionValues as $optionValue)
-                                                <option value="{{ $optionValue->id }}" class="text-dark">{{ $optionValue->title }}</option>
+                                                <option value="{{ $optionValue->id }}"
+                                                        class="text-dark">{{ $optionValue->title }}</option>
                                             @endforeach
-{{--                                            <option value="Чёрный" class="text-dark">Чёрный</option>--}}
-{{--                                            <option value="Синий" class="text-dark">Синий</option>--}}
                                         </select>
                                     </div>
                                 @endforeach
-
-{{--                                <div class="flex flex-col gap-2">--}}
-{{--                                    <label for="filter-item-2" class="cursor-pointer text-body text-xxs font-medium">Размер--}}
-{{--                                        (хват)</label>--}}
-{{--                                    <select id="filter-item-2"--}}
-{{--                                            class="form-select w-full h-12 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition">--}}
-{{--                                        <option value="Маленький" class="text-dark">Маленький</option>--}}
-{{--                                        <option value="Средний" class="text-dark">Средний</option>--}}
-{{--                                        <option value="Большой" class="text-dark">Большой</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
                             </div>
                             <div class="flex flex-wrap items-center gap-3 xs:gap-4">
                                 <div class="flex items-stretch h-[54px] lg:h-[72px] gap-2">
@@ -165,7 +151,7 @@
                 <!-- Products list -->
                 <div
                     class="products grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-8 gap-y-8 lg:gap-y-10 2xl:gap-y-12">
-                        @each('components.product', $watchedProducts, 'product')
+                    @each('components.product', $watchedProducts, 'product')
                 </div>
             </section>
 

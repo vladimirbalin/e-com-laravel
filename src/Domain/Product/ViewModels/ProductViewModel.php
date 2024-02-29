@@ -23,12 +23,13 @@ class ProductViewModel
         return $this->remember('product_main_page', $callback);
     }
 
-    public function catalogPage(): LengthAwarePaginator
+    public function catalogPage(Category $category): LengthAwarePaginator
     {
         return Product::query()
-            ->select(['id', 'title', 'slug', 'thumbnail', 'price', 'brand_id'])
-            ->with('brand:id,title')
+            ->select(['id', 'title', 'slug', 'thumbnail', 'price', 'brand_id', 'json_properties'])
+            ->with(['brand:id,title', 'properties'])
             ->filtered()
+            ->ofCategory($category)
             ->when(request('filters.search'),
                 fn (Builder $query) => $query->whereFullText(['title', 'text'], request('filters.search')))
             ->sorted()

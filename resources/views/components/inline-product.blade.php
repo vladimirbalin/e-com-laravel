@@ -2,21 +2,19 @@
 
     <!-- Product card -->
 <div class="product-card flex flex-col md:flex-row rounded-3xl bg-card">
-    <a href="product.html"
+    <a href="{{ route('products.show', $product->slug) }}"
        class="product-card-photo overflow-hidden shrink-0 md:w-[260px] xl:w-[320px] h-[320px] md:h-full rounded-3xl">
         <img src="{{$product->thumbnail}}" class="object-cover w-full h-full"
              alt="Logitech G PRO Mechanical Gaming Keyboard RU">
     </a>
     <div class="grow flex flex-col py-8 px-6 md:px-8">
-        <h3 class="text-sm lg:text-md font-black"><a href="product.html"
+        <h3 class="text-sm lg:text-md font-black"><a href="{{ route('products.show', $product->slug) }}"
                                                      class="inline-block text-white hover:text-pink">{{ $product->title }}</a>
         </h3>
         <ul class="space-y-1 mt-4 text-xxs">
-            <li class="flex justify-between text-body"><strong>Вес (г):</strong> 92</li>
-            <li class="flex justify-between text-body"><strong>Тип сенсора:</strong> Оптический</li>
-            <li class="flex justify-between text-body"><strong>DPI мыши:</strong> 18000</li>
-            <li class="flex justify-between text-body"><strong>Количество кнопок мыши:</strong> 8</li>
-            <li class="flex justify-between text-body"><strong>Подсветка:</strong> RGB</li>
+            @foreach($product->json_properties as $title => $value)
+                <li class="flex justify-between text-body"><strong>{{ $title }}</strong>{{ $value }}</li>
+            @endforeach
         </ul>
         <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 mt-6">
             <div class="flex items-baseline gap-4">

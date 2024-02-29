@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Src\Domain\Product\Collections\OptionValueCollection;
 
 class OptionValue extends Model
 {
@@ -22,5 +23,10 @@ class OptionValue extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class);
+    }
+
+    public function newCollection(array $models = []): OptionValueCollection
+    {
+        return new OptionValueCollection($models);
     }
 }

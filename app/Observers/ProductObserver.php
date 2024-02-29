@@ -2,15 +2,30 @@
 
 namespace App\Observers;
 
+use App\Jobs\SavePropertiesForProductJob;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Src\Domain\Product\Models\Product;
 
 class ProductObserver
 {
-    public function saved(): void
+    public function created(Product $product)
+    {
+        SavePropertiesForProductJob::dispatch($product)->delay(CarbonInterval::seconds(10));
+    }
+    public function saved(Product $product): void
     {
         $this->forget();
+//        if (! $this->changedOnlyJsonProperties($product)) {
+//            SavePropertiesForProductJob::dispatch($product)->delay(CarbonInterval::seconds(10));
+//        }
+    }
+
+    private function changedOnlyJsonProperties(Product $product): bool
+    {
+        return (count($product->getDirty()) === 1 &&
+            $product->isDirty('json_properties'));
     }
 
     public function deleted(Product $product): void
