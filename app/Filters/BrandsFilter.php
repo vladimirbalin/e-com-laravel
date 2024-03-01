@@ -10,14 +10,13 @@ use Src\Domain\Catalog\Models\Brand;
 
 class BrandsFilter extends AbstractFilter
 {
-    private array|Collection $brands;
+    private $brandsQuery;
 
     public function __construct()
     {
         $this->brands = Brand::query()
             ->select(['title', 'id'])
-            ->has('products')
-            ->get();
+            ->has('products');
     }
 
     #[\Override] public function title(): string
@@ -40,6 +39,7 @@ class BrandsFilter extends AbstractFilter
     #[\Override] public function values(): array
     {
         return $this->brands
+            ->get()
             ->pluck('title', 'id')
             ->toArray();
     }
