@@ -28,8 +28,8 @@ class BrandsFilter extends AbstractFilter
 
     #[\Override] public function apply(Builder $query): Builder
     {
-        return $query->when($this->requestValue('brands'), function (Builder $query) {
-            return $query->whereIn('brand_id', $this->requestValue('brands'));
+        return $query->when($this->requestValue(), function (Builder $query) {
+            return $query->whereIn('brand_id', $this->requestValue());
         });
     }
 
