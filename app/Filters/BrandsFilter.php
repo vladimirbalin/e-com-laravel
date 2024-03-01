@@ -4,24 +4,21 @@ declare(strict_types=1);
 namespace App\Filters;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Src\Domain\Catalog\Filters\AbstractFilter;
 use Src\Domain\Catalog\Models\Brand;
 
 class BrandsFilter extends AbstractFilter
 {
-    private $brandsQuery;
-
-    public function __construct()
+    private function brandsQuery(): Builder
     {
-        $this->brands = Brand::query()
+        return Brand::query()
             ->select(['title', 'id'])
             ->has('products');
     }
 
     #[\Override] public function title(): string
     {
-        return 'Бренды (' . $this->brands->count() . ')';
+        return 'Бренды (' . $this->brandsQuery()->count() . ')';
     }
 
     #[\Override] public function key(): string
@@ -38,7 +35,7 @@ class BrandsFilter extends AbstractFilter
 
     #[\Override] public function values(): array
     {
-        return $this->brands
+        return $this->brandsQuery()
             ->get()
             ->pluck('title', 'id')
             ->toArray();

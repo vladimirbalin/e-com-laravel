@@ -2,6 +2,8 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
+require 'contrib/npm.php';
+require 'deploy/npm.php';
 
 // Config
 
@@ -19,3 +21,5 @@ host('151.248.126.31')
 // Hooks
 
 after('deploy:failed', 'deploy:unlock');
+after('deploy:update_code', 'npm:install');
+after('npm:install', 'npm:build');
