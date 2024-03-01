@@ -173,7 +173,6 @@ return [
         App\Providers\ViewServiceProvider::class,
         App\Providers\TestingServiceProvider::class,
         App\Providers\MenuServiceProvider::class,
-        App\Providers\CatalogServiceProvider::class
     ])->toArray(),
 
     /*
