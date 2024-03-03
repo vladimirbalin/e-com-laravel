@@ -35,10 +35,6 @@ jobs:
           cp .env.ci .env
           cp .env.ci .env.testing
 
-      - name: Run composer
-        run: |
-          composer install --no-interaction
-
       - name: Install npm
         run: |
           npm install
@@ -46,6 +42,10 @@ jobs:
       - name: Build js dependencies
         run: |
           npm run build
+
+      - name: Run composer
+        run: |
+          composer install --no-interaction
 
       - name: Run test suite
         run: |

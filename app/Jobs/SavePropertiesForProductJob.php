@@ -21,7 +21,6 @@ class SavePropertiesForProductJob implements ShouldQueue
     public function handle(): void
     {
         $jsonProperties = $this->product->properties->titleToValue();
-//      $prices = $this->lectureService->calculatePricesForLecture($id)
         $this->product->update(['json_properties' => $jsonProperties]);
     }
 }
