@@ -15,7 +15,7 @@ class ProductViewModel
     public function homePage(): Collection|array
     {
         $callback = fn () => Product::forMainPage()
-            ->with(['brand:id,title', 'properties'])
+            ->with(['brand:id,title', 'properties:id,title'])
             ->orderBy('sorting')
             ->limit(8)
             ->get();
@@ -27,7 +27,7 @@ class ProductViewModel
     {
         return Product::query()
             ->select(['id', 'title', 'slug', 'thumbnail', 'price', 'brand_id', 'json_properties'])
-            ->with(['brand:id,title', 'properties'])
+            ->with(['brand:id,title', 'properties:id,title'])
             ->filtered()
             ->ofCategory($category)
             ->when(request('filters.search'),

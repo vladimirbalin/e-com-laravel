@@ -8,8 +8,8 @@ use Src\Domain\Cart\Models\CartItem;
 
 class CartItemCollection extends Collection
 {
-    public function itemsCount(): int
+    public function totalPrice(): int
     {
-        return $this->sum(fn (CartItem $item) => $item->amount);
+        return $this->sum(fn (CartItem $cartItem) => $cartItem->totalPrice);
     }
 }

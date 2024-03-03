@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace Src\Domain\Cart;
 
-use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Src\Domain\Cart\Contracts\CartIdentityStorageContract;
 use Src\Domain\Cart\Models\Cart;
 use Src\Domain\Cart\Models\CartItem;
+use Src\Domain\Cart\StorageIdentities\FakeSessionIdentityStorage;
 use Src\Domain\Product\Models\Product;
 use Src\Support\ValueObjects\Price;
 
@@ -20,6 +19,11 @@ class CartManager
     public function __construct(
         private readonly CartIdentityStorageContract $cartIdentityStorage
     ) {
+    }
+
+    public static function fake(): void
+    {
+        app()->bind(CartIdentityStorageContract::class, FakeSessionIdentityStorage::class);
     }
 
     public function add(Product $product, int $quantity = 1, array $optionValues = []): Model|Cart|Builder
@@ -100,49 +104,61 @@ class CartManager
 
     public function truncate(): void
     {
-        $cart = $this->get();
+        if (! $this->getCart()) {
+            return;
+        }
 
-        $cart?->cartItems()->delete();
+        $cart = $this->getCart();
+        $cart->cartItems()->delete();
 
         Cache::forget($this->cacheKey());
     }
 
-    public function get(): ?Cart
+    public function getCart(): Cart|false
     {
-        return Cart::with(['cartItems.optionValues.option', 'cartItems.product'])
-            ->where('storage_id', $this->cartIdentityStorage->get())
-            ->when(auth()->check(),
-                fn (Builder $query) => $query->where('user_id', auth()->id()))
-            ->first();
+        return Cache::rememberForever($this->cacheKey(),
+            fn () => Cart::with(['cartItems.optionValues.option', 'cartItems.product'])
+                ->when(auth()->check(),
+                    fn (Builder $query) => $query->where('user_id', auth()->id()),
+                    fn (Builder $query) => $query->where('storage_id', $this->cartIdentityStorage->get()))
+                ->first() ?? false);
     }
 
-    public function cartItems(): ?Collection
+    public function getCartItems(): Collection
     {
-        return $this->get()?->cartItems;
+        if (! $this->getCart()) {
+            return Collection::make();
+        }
+
+        return $this->getCart()->cartItems;
     }
 
     public function count(): int
     {
-        if (is_null($this->get())) {
+        if (! $this->getCart()) {
             return 0;
         }
 
-        return $this->get()->cartItems->count();
+        return $this->getCart()->cartItems->count();
     }
 
     public function getTotalPrice(): Price
     {
-        if (is_null($this->cartItems())) {
+        if ($this->getCartItems()->isEmpty()) {
             return Price::make(0);
         }
 
-        $totalPrice = $this->cartItems()->itemsCount();
+        $totalPrice = $this->getCartItems()->totalPrice();
 
         return Price::make($totalPrice);
     }
 
     private function cacheKey(): string
     {
+        if (auth()->check()) {
+            return 'cart_' . auth()->id();
+        }
+
         return 'cart_' . $this->cartIdentityStorage->get();
     }
 

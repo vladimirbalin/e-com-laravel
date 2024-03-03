@@ -41,7 +41,7 @@ class CartItem extends Model
         return $this->belongsToMany(OptionValue::class);
     }
 
-    protected function amount(): Attribute
+    protected function totalPrice(): Attribute
     {
         return Attribute::make(
             get: fn ($value, array $attributes) => $this->price->getValue() * $this->quantity,
