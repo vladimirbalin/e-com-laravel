@@ -74,8 +74,9 @@ class ProductQueryBuilder extends Builder
     {
         $watchedIdsFromSession = session('watched', []);
 
-        $watchedProducts = Product::whereIn('id', $watchedIdsFromSession)
-            ->with('brand');
+        $watchedProducts = Product::select(['id', 'title', 'brand_id', 'slug', 'thumbnail', 'price'])
+            ->whereIn('id', $watchedIdsFromSession)
+            ->with('brand:id,title');
 
         if (count($watchedIdsFromSession) > 0) {
             $ids = implode(',', array_reverse($watchedIdsFromSession));

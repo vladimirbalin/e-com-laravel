@@ -15,7 +15,7 @@ class ProductController extends Controller
         $watchedProducts = $product->getPreviouslyWatched();
         session()->put('watched.' . $product->id, $product->id);
 
-        $product->load(['optionValues.option']);
+        $product->load(['optionValues.option:id,title', 'properties:title']);
         $options = $product->optionValues->keyValues();
 
         return view('product.show',

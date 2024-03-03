@@ -15,7 +15,7 @@ class ProductViewModel
     public function homePage(): Collection|array
     {
         $callback = fn () => Product::forMainPage()
-            ->with('brand:id,title')
+            ->with(['brand:id,title', 'properties'])
             ->orderBy('sorting')
             ->limit(8)
             ->get();

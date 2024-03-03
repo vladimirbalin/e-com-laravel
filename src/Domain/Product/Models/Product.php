@@ -74,7 +74,7 @@ class Product extends Model
         return true;
     }
 
-    protected function jsonProperties(): Attribute
+    protected function jsonPropertiesGet(): Attribute
     {
         return Attribute::make(
             get: fn ($value, array $attributes) => $this->json_properties ?? $this->properties->titleToValue(),

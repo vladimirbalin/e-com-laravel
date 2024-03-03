@@ -40,7 +40,10 @@
                                     <?php /** @var \Src\Domain\Catalog\Filters\AbstractFilter $filter */ ?>
                                 {!! $filter !!}
                             @endforeach
-                            <input type="hidden" name="filters[sort]" value="{{request('filters.sort')}}">
+
+                            @if(request('filters.sort'))
+                                <input type="hidden" name="filters[sort]" value="{{ request('filters.sort') }}">
+                            @endif
 
                             <!-- Filter item -->
                             {{--                            <div>--}}
@@ -128,12 +131,16 @@
                                         @foreach(request('filters') ?? [] as $name => $value)
                                             @if(is_array($value))
                                                 @foreach($value as $subName => $v)
-                                                    <input type="hidden" name="{{"filters[$name][$subName]"}}"
-                                                           value="{{$v}}">
+                                                    @if(request("filters.$name.$subName"))
+                                                        <input type="hidden" name="{{"filters[$name][$subName]"}}"
+                                                               value="{{$v}}">
+                                                    @endif
                                                 @endforeach
                                             @else
-                                                <input type="hidden" name="{{"filters[$name]"}}"
-                                                       value="{{$value}}">
+                                                @if(request("filters.$name"))
+                                                    <input type="hidden" name="{{"filters[$name]"}}"
+                                                           value="{{$value}}">
+                                                @endif
                                             @endif
                                         @endforeach
                                     </form>
