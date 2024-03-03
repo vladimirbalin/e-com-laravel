@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -20,5 +21,15 @@ Route::get('/catalog/{category:slug?}', CatalogController::class)
 Route::get('/products/{product:slug}', ProductController::class)
     ->name('products.show');
 
+Route::controller(CartController::class)
+    ->prefix('cart')
+    ->name('cart.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/{product}/add', 'add')->name('add');
+        Route::post('/{cartItem}/quantity', 'quantity')->name('quantity');
+        Route::delete('/{cartItem}', 'delete')->name('delete');
+        Route::delete('/', 'truncate')->name('truncate');
+    });
 
 require __DIR__ . '/parts/auth.php';

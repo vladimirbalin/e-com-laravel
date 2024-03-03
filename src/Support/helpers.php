@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Src\Domain\Cart\CartManager;
 use Src\Domain\Catalog\Filters\FilterManager;
 use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
@@ -30,7 +31,6 @@ if (! function_exists('sortings')) {
         return app(FilterManager::class)->sortings();
     }
 }
-
 if (! function_exists('catalog_filters_url')) {
     function catalog_filters_url(?Category $category, array $params = []): string
     {
@@ -38,6 +38,12 @@ if (! function_exists('catalog_filters_url')) {
             'category' => $category,
             ...['filters' => [...request('filters', []), ...$params]]
         ]);
+    }
+}
+if (! function_exists('cart')) {
+    function cart(): CartManager
+    {
+        return app(CartManager::class);
     }
 }
 

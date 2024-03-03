@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Src\Support\ValueObjects;
 
+use App\Traits\Makeable;
 use Src\Support\Exceptions\CurrencyNotAllowed;
 use Src\Support\Exceptions\PriceMustNotBeLessThanZero;
 use Stringable;
 
 class Price implements Stringable
 {
+    use Makeable;
+
     private array $currencies = [
         'RUB' => '₽'
     ];
@@ -21,7 +24,7 @@ class Price implements Stringable
      * @throws PriceMustNotBeLessThanZero
      */
     public function __construct(
-        private readonly int    $value,
+        private int             $value,
         private readonly string $currency = 'RUB',
         private readonly int    $precision = 100
     ) {
@@ -78,6 +81,13 @@ class Price implements Stringable
     public function getSymbol()
     {
         return $this->currencies[$this->currency];
+    }
+
+    public function multiplyBy(int $multiplier): static
+    {
+        $this->value *= $multiplier;
+
+        return $this;
     }
 
     public function __toString(): string
