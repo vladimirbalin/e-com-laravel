@@ -6,11 +6,16 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use DomainException;
 use Laravel\Socialite\Facades\Socialite;
-use Src\Domain\Auth\Models\User;
+use Src\Domain\Auth\Actions\SocialiteCallbackAction;
+use Src\Domain\Auth\DTOs\SocialiteCallbackDto;
 use Throwable;
 
 class SocialAuthController extends Controller
 {
+    public function __construct(private SocialiteCallbackAction $socialiteCallbackAction)
+    {
+    }
+
     public function redirect(string $driver)
     {
         try {
@@ -28,15 +33,13 @@ class SocialAuthController extends Controller
             throw new DomainException("Драйвер $driver не поддерживается.");
         }
 
-        $user = User::updateOrCreate([
-            'github_id' => $socialNetworkUser->getId(),
-        ], [
-            'name' => $socialNetworkUser->getName(),
-            'email' => $socialNetworkUser->getEmail(),
-            'password' => bcrypt(str()->random(20))
-        ]);
-
-        auth()->login($user);
+        $this->socialiteCallbackAction->handle(new SocialiteCallbackDto(
+            $socialNetworkUser->getId(),
+            $socialNetworkUser->getName(),
+            $socialNetworkUser->getEmail(),
+            bcrypt(str()->random(20)),
+            $driver
+        ));
 
         return to_route('home');
     }

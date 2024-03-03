@@ -5,10 +5,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginFormRequest;
-use Illuminate\Support\Facades\Auth;
+use Src\Domain\Auth\Actions\LoginAction;
+use Src\Domain\Auth\Actions\LogoutAction;
+use Src\Domain\Auth\DTOs\LoginDto;
 
 class LoginController extends Controller
 {
+    public function __construct(
+        private LoginAction  $loginAction,
+        private LogoutAction $logoutAction
+    ) {
+    }
+
     public function showLoginPage()
     {
         return view('auth.login');
@@ -21,24 +29,22 @@ class LoginController extends Controller
 
     public function handle(LoginFormRequest $request)
     {
-        if (! Auth::attempt($request->validated())) {
+        $logined = $this->loginAction->handle(
+            new LoginDto($request->input('email'), $request->input('password'))
+        );
+
+        if (! $logined) {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
             ])->onlyInput('email');
         }
-
-        $request->session()->regenerate();
 
         return redirect()->intended(route('home'));
     }
 
     public function logout()
     {
-        auth()->logout();
-
-        request()->session()->invalidate();
-
-        request()->session()->regenerateToken();
+        $this->logoutAction->handle();
 
         return redirect(route('home'));
     }
