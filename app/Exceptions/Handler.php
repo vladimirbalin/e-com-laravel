@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use DomainException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -20,18 +21,42 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
+    protected $dontReport = [
+        BusinessException::class
+    ];
+
     /**
      * Register the exception handling callbacks for the application.
      */
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+            if ($this->shouldReport($e)) {
+                // Это отличное место для
+                // интеграции сторонних сервисов
+                // для мониторинга ошибок
+            }
+
+            // это залогирует исключение
+            // по умолчанию в файл laravel.log
+            parent::report($e);
         });
 
-        $this->renderable(function (DomainException $e) {
-            flash()->alert($e->getMessage());
-            return back();
+        $this->renderable(function (BusinessException $e, Request $request) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $e->getUserMessage(),
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            flash()->alert($e->getUserMessage());
+
+            return session()->previousUrl()
+                ? back()
+                    ->withInput()
+                    ->withErrors(['error' => __($e->getUserMessage())])
+                : to_route('home');
         });
 
         $this->renderable(function (NotFoundHttpException $e) {
