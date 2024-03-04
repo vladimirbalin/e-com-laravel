@@ -32,4 +32,12 @@ Route::controller(CartController::class)
         Route::delete('/', 'truncate')->name('truncate');
     });
 
+Route::controller(\App\Http\Controllers\CheckoutController::class)
+    ->prefix('checkout')
+    ->name('checkout.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'handle')->name('handle');
+    });
+
 require __DIR__ . '/parts/auth.php';

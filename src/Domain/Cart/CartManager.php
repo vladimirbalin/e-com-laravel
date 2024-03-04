@@ -117,7 +117,7 @@ class CartManager
     public function getCart(): Cart|false
     {
         return Cache::rememberForever($this->cacheKey(),
-            fn () => Cart::with(['cartItems.optionValues.option', 'cartItems.product'])
+            fn () => Cart::with(['cartItems.optionValues.option', 'cartItems.product.properties'])
                 ->when(auth()->check(),
                     fn (Builder $query) => $query->where('user_id', auth()->id()),
                     fn (Builder $query) => $query->where('storage_id', $this->cartIdentityStorage->get()))
