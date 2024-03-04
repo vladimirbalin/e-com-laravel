@@ -12,7 +12,7 @@
                                                      class="inline-block text-white hover:text-pink">{{ $product->title }}</a>
         </h3>
         <ul class="space-y-1 mt-4 text-xxs">
-            @foreach($product->json_properties as $title => $value)
+            @foreach($product->json_properties_get as $title => $value)
                 <li class="flex justify-between text-body"><strong>{{ $title }}</strong>{{ $value }}</li>
             @endforeach
         </ul>
