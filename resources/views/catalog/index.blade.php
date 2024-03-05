@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    {{ $category?->title ?? __('titles.catalog') }}
+    {{ $seo_title ?? $category?->title ?? __('titles.catalog') }}
 @endsection
 @section('content')
     <main class="py-16 lg:py-20">
