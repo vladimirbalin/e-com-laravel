@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Src\Domain\Order;
+namespace Src\Domain\Order\Enums;
 
 use Src\Domain\Order\Models\Order;
 use Src\Domain\Order\States\CancelledOrderState;

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Src\Domain\Auth\Models\User;
-use Src\Domain\Order\OrderStatusEnum;
+use Src\Domain\Order\Enums\OrderStatusEnum;
 
 class Order extends Model
 {
@@ -31,6 +32,16 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function orderCustomers(): HasMany
+    {
+        return $this->hasMany(OrderCustomer::class);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 
     protected function status(): Attribute

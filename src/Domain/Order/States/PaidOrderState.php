@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Src\Domain\Order\States;
 
-use Src\Domain\Order\OrderStatusEnum;
+use Src\Domain\Order\Enums\OrderStatusEnum;
 
 class PaidOrderState extends OrderState
 {

@@ -23,6 +23,7 @@ class ProductFactory extends Factory
             'sorting' => $this->faker->numberBetween(1, 999),
             'is_on_the_main_page' => $this->faker->boolean(25),
             'text' => $this->faker->realText(),
+            'quantity' => $this->faker->numberBetween(0, 20),
             'json_properties' => null
         ];
     }

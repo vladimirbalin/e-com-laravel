@@ -31,7 +31,7 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (DomainException $e) {
             flash()->alert($e->getMessage());
-            return back();
+            return back()->withInput();
         });
 
         $this->renderable(function (NotFoundHttpException $e) {

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Src\Services\Telegram;
 
-use App\Exceptions\TelegramBotApiException;
 use Illuminate\Support\Facades\Http;
+use Src\Support\Exceptions\TelegramBotApiException;
 use Throwable;
 
 class TelegramBotApi

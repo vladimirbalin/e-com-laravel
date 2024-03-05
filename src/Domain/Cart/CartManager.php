@@ -124,6 +124,11 @@ class CartManager
                 ->first() ?? false);
     }
 
+    /**
+     * Get the cart items.
+     *
+     * @return Collection<CartItem>
+     */
     public function getCartItems(): Collection
     {
         if (! $this->getCart()) {

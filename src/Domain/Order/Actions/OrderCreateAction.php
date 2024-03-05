@@ -6,6 +6,7 @@ namespace Src\Domain\Order\Actions;
 use App\Http\Requests\OrderFormRequest;
 use Src\Domain\Auth\Contracts\Register;
 use Src\Domain\Auth\DTOs\RegisterDto;
+use Src\Domain\Order\Enums\OrderStatusEnum;
 use Src\Domain\Order\Models\Order;
 
 class OrderCreateAction
@@ -25,10 +26,12 @@ class OrderCreateAction
             );
         }
 
-        return  Order::create([
+        return Order::create([
             'payment_method_id' => $orderFormRequest->get('payment_method'),
             'delivery_method_id' => $orderFormRequest->get('delivery_method'),
-
+            'status' => OrderStatusEnum::NEW->value
+//            user_id
+//            total
         ]);
 
     }

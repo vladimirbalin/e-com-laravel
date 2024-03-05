@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Helpers;
+namespace Src\Support;
 
 use App\Events\SessionRegeneratedEvent;
 use Closure;

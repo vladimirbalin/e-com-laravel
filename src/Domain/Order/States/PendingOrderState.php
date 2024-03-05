@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Src\Domain\Order\States;
 
-use Src\Domain\Order\OrderStatusEnum;
+use Override;
+use Src\Domain\Order\Enums\OrderStatusEnum;
 
 class PendingOrderState extends OrderState
 {
@@ -12,17 +13,17 @@ class PendingOrderState extends OrderState
         CancelledOrderState::class
     ];
 
-    #[\Override] public function canBeChanged(): bool
+    #[Override] public function canBeChanged(): bool
     {
         return true;
     }
 
-    #[\Override] public function value(): string
+    #[Override] public function value(): string
     {
         return OrderStatusEnum::PENDING->value;
     }
 
-    #[\Override] public function humanValue(): string
+    #[Override] public function humanValue(): string
     {
         return 'В ожидании';
     }

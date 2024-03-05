@@ -11,7 +11,7 @@ class PhoneRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! is_numeric($value)) {
-            $fail('The :attribute must be a valid phone number.');
+            $fail(__('validation.phone', ['attribute' => __('validation.attributes.phone')]));
         }
     }
 }

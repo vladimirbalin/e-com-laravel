@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Src\Domain\Cart\Collections\CartItemCollection;
 use Src\Domain\Cart\Collections\OrderItemCollection;
 use Src\Domain\Product\Models\OptionValue;
 use Src\Domain\Product\Models\Product;
@@ -21,9 +22,9 @@ class CartItem extends Model
 
     protected $casts = ['price' => PriceCast::class];
 
-    public function newCollection($models = []): OrderItemCollection
+    public function newCollection($models = []): CartItemCollection
     {
-        return new OrderItemCollection($models);
+        return new CartItemCollection($models);
     }
 
     public function cart(): BelongsTo

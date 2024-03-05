@@ -23,59 +23,89 @@
                     <div class="p-6 2xl:p-8 rounded-[20px] bg-card">
                         <h3 class="mb-6 text-md 2xl:text-lg font-bold">Контактная информация</h3>
                         <div class="space-y-3">
-                            <input type="text"
-                                   class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                   placeholder="Имя" name="contact-info[name]" required>
-                            <input type="text"
-                                   class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                   placeholder="Фамилия" name="contact-info[surname]" required>
-                            <input type="text"
-                                   class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                   placeholder="Номер телефона" name="contact-info[phone]" required>
+                            <x-forms.text-input
+                                    name="customer[first_name]"
+                                    :isError="$errors->has('customer.first_name')"
+                                    type="text"
+                                    placeholder="{{__('Имя')}}"
+                                    value="{{ old('customer.first_name') }}"
+                            />
+                            @error('customer.first_name')
+                            <x-forms.error>{{ $message }}</x-forms.error>
+                            @enderror
+
+                            <x-forms.text-input
+                                    name="customer[last_name]"
+                                    :isError="$errors->has('customer.last_name')"
+                                    type="text"
+                                    placeholder="{{__('Фамилия')}}"
+                                    value="{{ old('customer.last_name') }}"
+                            />
+                            @error('customer.last_name')
+                            <x-forms.error>{{ $message }}</x-forms.error>
+                            @enderror
+
+                            <x-forms.text-input
+                                    name="customer[phone]"
+                                    :isError="$errors->has('customer.phone')"
+                                    type="text"
+                                    placeholder="{{__('Телефон')}}"
+                                    value="{{ old('customer.phone') }}"
+                            />
+                            @error('customer.phone')
+                            <x-forms.error>{{ $message }}</x-forms.error>
+                            @enderror
+
+                            <x-forms.text-input
+                                    name="customer[email]"
+                                    :isError="$errors->has('customer.email')"
+                                    type="text"
+                                    placeholder="{{__('Email')}}"
+                                    value="{{ old('customer.email') }}"
+                            />
+                            @error('customer.email')
+                            <x-forms.error>{{ $message }}</x-forms.error>
+                            @enderror
+
                             @guest()
-                                <input type="email"
-                                       class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                       placeholder="E-mail" required>
                                 <div x-data="{ createAccount: false }">
                                     <div class="py-3 text-body">Вы можете создать аккаунт после оформления заказа</div>
                                     <div class="form-checkbox">
                                         <input type="checkbox" id="checkout-create-account"
                                                name="create_account"
-                                               value="1"
-                                            @checked(old('create_account'))>
+                                                @checked(old('create_account'))>
                                         <label for="checkout-create-account" class="form-checkbox-label"
                                                @click="createAccount = ! createAccount">Зарегистрировать аккаунт</label>
                                     </div>
                                     <div
-                                        x-show="createAccount"
-                                        x-transition:enter="ease-out duration-300"
-                                        x-transition:enter-start="opacity-0"
-                                        x-transition:enter-end="opacity-100"
-                                        x-transition:leave="ease-in duration-150"
-                                        x-transition:leave-start="opacity-100"
-                                        x-transition:leave-end="opacity-0"
-                                        class="mt-4 space-y-3"
+                                            x-show="createAccount"
+                                            x-transition:enter="ease-out duration-300"
+                                            x-transition:enter-start="opacity-0"
+                                            x-transition:enter-end="opacity-100"
+                                            x-transition:leave="ease-in duration-150"
+                                            x-transition:leave-start="opacity-100"
+                                            x-transition:leave-end="opacity-0"
+                                            class="mt-4 space-y-3"
                                     >
                                         <x-forms.text-input
-                                            type="password"
-                                            name="password"
-                                            placeholder="Придумайте пароль"
-                                            :isError="$errors->has('password')"
-                                            required/>
+                                                type="password"
+                                                name="password"
+                                                placeholder="Придумайте пароль"
+                                                :isError="$errors->has('password')"
+                                        />
                                         @error('password')
                                         <x-forms.error>{{ $message }}</x-forms.error>
                                         @enderror
                                         <x-forms.text-input
-                                            name="password_confirmation"
-                                            :isError="$errors->has('password_confirmation')"
-                                            type="password"
-                                            placeholder="{{__('Password confirmation')}}"/>
+                                                name="password_confirmation"
+                                                :isError="$errors->has('password_confirmation')"
+                                                type="password"
+                                                placeholder="{{__('Password confirmation')}}"/>
                                         @error('password_confirmation')
                                         <x-forms.error>{{ $message }}</x-forms.error>
                                         @enderror
                                     </div>
                                 </div>
-
                             @endguest
                         </div>
                     </div>
@@ -90,20 +120,36 @@
                                 @foreach($deliveryMethods as $deliveryMethod)
                                         <?php /** @var \Src\Domain\Order\Models\DeliveryMethod $deliveryMethod */ ?>
                                     <div class="form-radio">
-                                        <input type="radio" name="delivery-method"
-                                               id="delivery-method-{{  $deliveryMethod->id }}"
-                                               value="delivery-method-pickup">
-                                        <label for="delivery-method-pickup"
+                                        <input type="radio" name="delivery_method"
+                                               id="delivery-method-{{ $deliveryMethod->id }}"
+                                               value="{{ $deliveryMethod->id }}"
+                                                @checked($loop->first || old('delivery_method') == $deliveryMethod->id )>
+                                        <label for="delivery-method-{{ $deliveryMethod->id }}"
                                                class="form-radio-label">{{ $deliveryMethod->title }}</label>
                                     </div>
 
                                     @if($deliveryMethod->with_address)
-                                        <input type="text"
-                                               class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                               placeholder="Город" required>
-                                        <input type="text"
-                                               class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                               placeholder="Адрес" required>
+                                        <x-forms.text-input
+                                                name="customer[city]"
+                                                :isError="$errors->has('customer.city')"
+                                                type="text"
+                                                placeholder="{{__('Город')}}"
+                                                value="{{ old('customer.city') }}">
+                                        </x-forms.text-input>
+                                        @error('customer.city')
+                                        <x-forms.error>{{ $message }}</x-forms.error>
+                                        @enderror
+
+                                        <x-forms.text-input
+                                                name="customer[address]"
+                                                :isError="$errors->has('customer.address')"
+                                                type="text"
+                                                placeholder="{{__('Адрес')}}"
+                                                value="{{ old('customer.address') }}">
+                                        </x-forms.text-input>
+                                        @error('customer.address')
+                                        <x-forms.error>{{ $message }}</x-forms.error>
+                                        @enderror
                                     @endif
                                 @endforeach
                             </div>
@@ -117,10 +163,10 @@
                                         <?php /** @var \Src\Domain\Order\Models\PaymentMethod $paymentMethod */ ?>
                                     <div class="form-radio">
                                         <input type="radio"
-                                               name="payment-method" id="payment-method-{{ $paymentMethod->id }}"
+                                               name="payment_method" id="payment-method-{{ $paymentMethod->id }}"
                                                value="{{ $paymentMethod->id }}"
-                                            @checked($loop->first() || old('payment-method') == $paymentMethod->id )>
-                                        <label for="payment-method-1"
+                                                @checked($loop->first || old('payment-method') == $paymentMethod->id)>
+                                        <label for="payment-method-{{ $paymentMethod->id }}"
                                                class="form-radio-label">{{ $paymentMethod->title }}</label>
                                     </div>
                                 @endforeach
@@ -169,7 +215,7 @@
                                 <div class="flex gap-3">
                                     <input type="text"
                                            class="grow w-full h-[56px] px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
-                                           placeholder="Промокод" required>
+                                           placeholder="Промокод">
                                     <button type="submit" class="shrink-0 w-14 !h-[56px] !px-0 btn btn-purple">→
                                     </button>
                                 </div>
@@ -202,11 +248,11 @@
                                 </tbody>
                             </table>
 
-                            <!-- Process to checkout -->
-                            <button type="submit" class="w-full btn btn-pink">Оформить заказ</button>
+
                         </div>
                     </div>
-
+                    <!-- Process to checkout -->
+                    <button type="submit" class="w-full btn btn-pink">Оформить заказ</button>
                 </form>
             </section>
 
