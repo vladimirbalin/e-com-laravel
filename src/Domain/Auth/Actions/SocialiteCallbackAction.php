@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Src\Domain\Auth\Actions;
 
-use App\Helpers\SessionRegenerateAction;
 use Src\Domain\Auth\DTOs\SocialiteCallbackDto;
 use Src\Domain\Auth\Models\User;
+use Src\Support\SessionRegenerateAction;
 
 class SocialiteCallbackAction
 {

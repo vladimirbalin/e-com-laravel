@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Src\Domain\Cart\Collections\CartItemCollection;
+use Src\Domain\Cart\Collections\OrderItemCollection;
 use Src\Domain\Product\Models\OptionValue;
 use Src\Domain\Product\Models\Product;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Src\Support\ValueObjects;
 
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 readonly class UserName
 {
@@ -11,7 +12,7 @@ readonly class UserName
         private string $name
     ) {
         if (Str::length($name) < 2) {
-            throw new \InvalidArgumentException("Name $name must have at least 2 symbols");
+            throw new InvalidArgumentException("Name $name must have at least 2 symbols");
         }
     }
 

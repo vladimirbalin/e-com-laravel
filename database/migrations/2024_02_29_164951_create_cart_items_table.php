@@ -16,24 +16,28 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
 
-            $table->foreignIdFor(Cart::class)->constrained('carts')
+            $table->foreignIdFor(Cart::class)
+                ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(Product::class)->constrained('products')
+            $table->foreignIdFor(Product::class)
+                ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->unsignedMediumInteger('quantity');
-            $table->unsignedBigInteger('price');
+            $table->unsignedInteger('price');
             $table->string('string_option_values')->nullable();
         });
 
         Schema::create('cart_item_option_value', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(CartItem::class)->constrained('cart_items')
+            $table->foreignIdFor(CartItem::class)
+                ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(OptionValue::class)->constrained('option_values')
+            $table->foreignIdFor(OptionValue::class)
+                ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
