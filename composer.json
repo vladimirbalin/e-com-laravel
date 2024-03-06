@@ -15,7 +15,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.11",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "unitpay/php-sdk": "^2.0",
+        "yoomoney/yookassa-sdk-php": "^3.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",
