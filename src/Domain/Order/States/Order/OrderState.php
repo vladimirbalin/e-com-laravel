@@ -18,4 +18,14 @@ abstract class OrderState extends State
     {
         return OrderStatusChangedEvent::class;
     }
+
+    public function color(): string
+    {
+        return match (static::class) {
+            NewOrderState::class => 'white',
+            PendingOrderState::class => 'purple',
+            PaidOrderState::class => 'green',
+            CancelledOrderState::class => 'pink',
+        };
+    }
 }

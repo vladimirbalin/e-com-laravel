@@ -17,6 +17,8 @@ class Payment extends Model
 
     protected $guarded = [];
 
+    protected $casts = ['meta' => 'array'];
+
     public function uniqueIds(): array
     {
         return ['payment_id'];

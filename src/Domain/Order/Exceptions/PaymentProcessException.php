@@ -10,4 +10,8 @@ class PaymentProcessException extends \Exception
     {
         return new self('Payment with id: ' . $id . ' was not found');
     }
+    public static function orderNotFound($id): self
+    {
+        return new self('Order with id: ' . $id . ' was not found');
+    }
 }

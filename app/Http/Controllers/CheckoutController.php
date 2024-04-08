@@ -51,7 +51,11 @@ class CheckoutController extends Controller
         $order = $this->orderCreateAction->handle($request);
 
         $paymentIdLocal = (string) Str::uuid();
-        $meta = collect(['email' => $request->input('customer.email'), 'payment_id_local' => $paymentIdLocal]);
+        $meta = collect([
+            'email' => $request->input('customer.email'),
+            'payment_id_local' => $paymentIdLocal,
+            'order_id' => $order->id
+        ]);
 
         $paymentData = new PaymentData(
             $paymentIdLocal,

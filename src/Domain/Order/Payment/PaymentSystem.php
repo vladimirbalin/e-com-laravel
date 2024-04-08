@@ -9,8 +9,11 @@ use Src\Domain\Order\Contracts\PaymentGateway;
 use Src\Domain\Order\Enums\PaymentStateEnum;
 use Src\Domain\Order\Exceptions\PaymentProcessException;
 use Src\Domain\Order\Exceptions\PaymentProviderException;
+use Src\Domain\Order\Models\Order;
 use Src\Domain\Order\Models\Payment;
 use Src\Domain\Order\Models\PaymentHistory;
+use Src\Domain\Order\States\Order\CancelledOrderState;
+use Src\Domain\Order\States\Order\PaidOrderState;
 use Src\Domain\Order\States\Payment\CancelledPaymentState;
 use Src\Domain\Order\States\Payment\PaidPaymentState;
 use Src\Domain\Order\Traits\PaymentsEvents;
@@ -85,15 +88,21 @@ class PaymentSystem
                     throw PaymentProcessException::paymentNotFound(self::$provider->paymentId());
                 });
 
+            $order = Order::findOr($payment->meta['order_id'], function () use ($payment) {
+                throw PaymentProcessException::orderNotFound($payment->meta['order_id']);
+            });
+
             try {
                 if (is_callable(self::$onSuccess)) {
                     call_user_func(self::$onSuccess, $payment);
                 }
                 logger(sprintf('%s line: %s, id: %d, status: %s', __CLASS__, __LINE__, $payment->id, $payment->state->value()));
                 $payment->state->transitionTo(new PaidPaymentState($payment));
+                $order->status->transitionTo(new PaidOrderState($order));
                 logger(sprintf('%s line: %s, id: %d, status: %s', __CLASS__, __LINE__, $payment->id, $payment->state->value()));
             } catch (PaymentProcessException $e) {
                 $payment->state->transitionTo(new CancelledPaymentState($payment));
+                $order->status->transitionTo(new CancelledOrderState($order));
 
                 if (is_callable(self::$onError)) {
                     call_user_func(

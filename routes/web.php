@@ -7,6 +7,7 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThumbnailController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,4 +43,10 @@ Route::controller(CheckoutController::class)
         Route::post('/', 'handle')->name('handle');
     });
 
+Route::controller(ProfileController::class)
+    ->prefix('profile')
+    ->name('profile.')
+    ->group(function () {
+        Route::get('/orders', 'orders')->name('orders');
+    });
 require __DIR__ . '/parts/auth.php';
