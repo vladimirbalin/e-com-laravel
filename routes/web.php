@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ThumbnailController;
@@ -32,7 +34,7 @@ Route::controller(CartController::class)
         Route::delete('/', 'truncate')->name('truncate');
     });
 
-Route::controller(\App\Http\Controllers\CheckoutController::class)
+Route::controller(CheckoutController::class)
     ->prefix('checkout')
     ->name('checkout.')
     ->group(function () {
