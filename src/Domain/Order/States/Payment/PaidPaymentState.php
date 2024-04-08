@@ -9,6 +9,8 @@ use Src\Domain\Order\Enums\PaymentStateEnum;
 
 class PaidPaymentState extends PaymentState
 {
+    protected array $allowedTransitions = [CancelledPaymentState::class];
+
     #[Override] public function canBeChanged(): bool
     {
         return false;

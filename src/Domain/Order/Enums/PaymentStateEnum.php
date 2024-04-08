@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Src\Domain\Order\Enums;
 
-use Src\Domain\Order\Payment\Payment;
+use Src\Domain\Order\Models\Payment;
 use Src\Domain\Order\States\Payment\CancelledPaymentState;
 use Src\Domain\Order\States\Payment\PaidPaymentState;
 use Src\Domain\Order\States\Payment\PendingPaymentState;

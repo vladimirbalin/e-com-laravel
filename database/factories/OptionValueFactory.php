@@ -15,7 +15,7 @@ class OptionValueFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => ucfirst($this->faker->word),
+            'title' => ucfirst($this->faker->unique()->word),
             'option_id' => Option::inRandomOrder()->value('id'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

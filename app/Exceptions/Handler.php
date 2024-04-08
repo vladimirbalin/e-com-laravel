@@ -36,10 +36,6 @@ class Handler extends ExceptionHandler
                 // интеграции сторонних сервисов
                 // для мониторинга ошибок
             }
-
-            // это залогирует исключение
-            // по умолчанию в файл laravel.log
-            parent::report($e);
         });
 
         $this->renderable(function (BusinessException $e, Request $request) {

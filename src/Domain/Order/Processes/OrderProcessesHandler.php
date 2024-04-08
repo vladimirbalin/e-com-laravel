@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Order\Processes;
@@ -34,7 +35,7 @@ class OrderProcessesHandler
                 ->through($this->processes)
                 ->thenReturn();
         }, function (Order $order) {
-            flash()->info('Заказ' . $order->id . 'успешно создан');
+            flash()->info("Заказ $order->id успешно создан");
         }, function (Throwable $e) {
             throw new DomainException(app()->isProduction()
                 ? 'Заказ не был создан'

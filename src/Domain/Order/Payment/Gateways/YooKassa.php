@@ -1,10 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Order\Payment\Gateways;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Src\Domain\Order\Contracts\PaymentGateway;
+use Src\Domain\Order\Exceptions\PaymentProviderException;
+use Src\Domain\Order\Payment\PaymentData;
+use Src\Support\ValueObjects\Price;
 use Throwable;
 use YooKassa\Client;
 use YooKassa\Model\Notification\NotificationEventType;
@@ -15,7 +20,7 @@ use YooKassa\Model\Payment\PaymentInterface;
 use YooKassa\Model\Payment\PaymentStatus;
 use YooKassa\Request\Payments\PaymentResponse;
 
-class YooKassa
+class YooKassa implements PaymentGateway
 {
     protected Client $client;
 
@@ -32,7 +37,7 @@ class YooKassa
 
     public function paymentId(): string
     {
-        return $this->paymentData->id;
+        return $this->paymentData->meta->get('payment_id_local');
     }
 
     public function configure(array $config): void
@@ -52,6 +57,9 @@ class YooKassa
         return json_decode(file_get_contents('php://input'), true);
     }
 
+    /**
+     * @throws PaymentProviderException
+     */
     public function response(): JsonResponse
     {
         try {
@@ -86,6 +94,9 @@ class YooKassa
         }
     }
 
+    /**
+     * @throws PaymentProviderException
+     */
     public function validate(): bool
     {
         $meta = $this->paymentObject()->getMetadata()->toArray();
@@ -105,6 +116,9 @@ class YooKassa
         return $this->paymentObject()->getStatus() === PaymentStatus::WAITING_FOR_CAPTURE;
     }
 
+    /**
+     * @throws PaymentProviderException
+     */
     public function paid(): bool
     {
         return $this->paymentObject()->getPaid();
@@ -119,8 +133,8 @@ class YooKassa
     {
         return [
             'amount' => [
-                'value' => $this->paymentData->amount->value(),
-                'currency' => $this->paymentData->amount->currency(),
+                'value' => $this->paymentData->amount->getPreparedValue(),
+                'currency' => $this->paymentData->amount->getCurrency(),
             ],
             'capture' => false,
             'confirmation' => [
@@ -129,16 +143,15 @@ class YooKassa
             ],
             'description' => $this->paymentData->description,
             'receipt' => [
-                // TODO: check where do we get customer id/email
-//                'customer' => [
-//                    'email' => $options['buyer_email']
-//                ],
+                'customer' => [
+                    'email' => $this->paymentData->meta->get('email') ?? 'test@mail.com'
+                ],
                 'items' => [
                     [
                         'quantity' => 1, // количество
                         'amount' => [
-                            'value' => $this->paymentData->amount->value(),
-                            'currency' => $this->paymentData->amount->currency(),
+                            'value' => $this->paymentData->amount->getPreparedValue(),
+                            'currency' => $this->paymentData->amount->getCurrency(),
                         ],
                         'vat_code' => 1,
                         'description' => $this->paymentData->description,
@@ -153,6 +166,9 @@ class YooKassa
         ];
     }
 
+    /**
+     * @throws PaymentProviderException
+     */
     private function paymentObject(): PaymentResponse|Payment|PaymentInterface
     {
         $request = $this->request();

@@ -10,6 +10,11 @@ use Src\Support\State\State;
 
 class PendingPaymentState extends PaymentState
 {
+    protected array $allowedTransitions = [
+        CancelledPaymentState::class,
+        PaidPaymentState::class,
+    ];
+
     #[Override] public function canBeChanged(): bool
     {
         return true;

@@ -19,7 +19,7 @@ class CatalogController extends Controller
     ) {
     }
 
-    public function __invoke(Category $category, Request $request)
+    public function __invoke(Request $request, Category $category)
     {
         $categories = $this->categoryViewModel->homePage();
         $brands = $this->brandViewModel->catalogPage();

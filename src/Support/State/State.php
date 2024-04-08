@@ -42,7 +42,7 @@ abstract class State
                 "No transition for {$this->model->{$this->getStateColumnName()}->value()} to {$state->value()}");
         }
 
-        $this->model->updateQuietly(['status' => $state->value()]);
+        $this->model->updateQuietly([$this->getStateColumnName() => $state->value()]);
 
         if ($event = $this->stateChangedEvent()) {
             event(new $event($this->model, $this, $state));

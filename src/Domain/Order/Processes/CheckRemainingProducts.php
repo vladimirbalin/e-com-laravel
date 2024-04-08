@@ -11,6 +11,9 @@ use Src\Domain\Order\Models\Order;
 
 class CheckRemainingProducts implements OrderProcessPipe
 {
+    /**
+     * @throws OrderProcessException
+     */
     #[Override] public function handle(Order $order, Closure $next)
     {
         foreach (cart()->getCartItems() as $cartItem) {
