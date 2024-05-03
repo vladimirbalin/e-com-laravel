@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThumbnailController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,29 +21,17 @@ Route::get('/catalog/{category:slug?}', CatalogController::class)
 Route::get('/products/{product:slug}', ProductController::class)
     ->name('products.show');
 
-Route::controller(CartController::class)
-    ->prefix('cart')
+Route::prefix('cart')
     ->name('cart.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/{product}/add', 'add')->name('add');
-        Route::post('/{cartItem}/quantity', 'quantity')->name('quantity');
-        Route::delete('/{cartItem}', 'delete')->name('delete');
-        Route::delete('/', 'truncate')->name('truncate');
-    });
+    ->group(base_path('routes/parts/cart.php'));
 
-Route::controller(CheckoutController::class)
-    ->prefix('checkout')
+Route::prefix('checkout')
     ->name('checkout.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/', 'handle')->name('handle');
-    });
+    ->group(base_path('routes/parts/checkout.php'));
 
-Route::controller(ProfileController::class)
-    ->prefix('profile')
+Route::prefix('profile')
     ->name('profile.')
-    ->group(function () {
-        Route::get('/orders', 'orders')->name('orders');
-    });
+    ->middleware(['auth'])
+    ->group(base_path('routes/parts/profile.php'));
+
 require __DIR__ . '/parts/auth.php';
