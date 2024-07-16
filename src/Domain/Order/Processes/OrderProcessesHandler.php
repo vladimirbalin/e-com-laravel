@@ -16,9 +16,7 @@ class OrderProcessesHandler
 
     public function __construct(
         protected Order $order,
-
-    ) {
-    }
+    ) {}
 
     public function processes(array $processes): static
     {
