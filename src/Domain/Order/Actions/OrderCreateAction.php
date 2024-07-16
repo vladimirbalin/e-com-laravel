@@ -29,7 +29,6 @@ class OrderCreateAction
         return Order::create([
             'payment_method_id' => $orderFormRequest->get('payment_method'),
             'delivery_method_id' => $orderFormRequest->get('delivery_method'),
-            'status' => OrderStatusEnum::NEW->value,
             'total' => cart()->getTotalPrice(),
             'user_id' => auth()->id()
         ]);

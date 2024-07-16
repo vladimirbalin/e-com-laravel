@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Order\Models;
@@ -16,7 +17,10 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $attributes = ['status' => OrderStatusEnum::NEW->value];
+
     protected $casts = ['total' => PriceCast::class];
+
     protected $guarded = [];
 
     public function paymentMethod(): BelongsTo
