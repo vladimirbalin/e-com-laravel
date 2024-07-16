@@ -33,7 +33,7 @@
 
 - [2024_02_21_164333_change_products_table.php](database/migrations/2024_02_21_164333_change_products_table.php)
   индексируем.
-- [ProductViewModel](src/Domain/Product/ViewModels/ProductViewModel.php) ищем.
+- [ProductViewModel](src/Domain/Product/ViewModels/ProductViewModel.php#L34) ищем.
 
 ### Seo заголовки
 

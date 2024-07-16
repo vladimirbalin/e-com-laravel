@@ -10,10 +10,11 @@ use Src\Domain\Product\Models\Product;
 
 class ProductObserver
 {
-    public function created(Product $product)
+    public function created(Product $product): void
     {
         SavePropertiesForProductJob::dispatch($product)->delay(CarbonInterval::seconds(10));
     }
+
     public function saved(Product $product): void
     {
         $this->forget();

@@ -17,7 +17,6 @@ use Src\Domain\Catalog\Models\Category;
 use Src\Domain\Product\Collections\ProductCollection;
 use Src\Domain\Product\QueryBuilders\ProductQueryBuilder;
 
-
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
 {

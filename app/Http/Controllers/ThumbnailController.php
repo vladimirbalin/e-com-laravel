@@ -26,7 +26,7 @@ class ThumbnailController extends Controller
 
         $storage = Storage::disk('images');
 
-        // if $file is null, than folder variable contains filename
+        // if $file is null, then folder variable contains filename
         $originalPath = is_null($file) ? "$dir/$folder" : "$dir/$folder/$file";
         $newPath = is_null($file) ? "$dir/$method/$size" : "$dir/$method/$size/$folder";
         $newPathWithFilename = is_null($file) ? "$dir/$method/$size/$folder" : "$dir/$method/$size/$folder/$file";
