@@ -13,7 +13,7 @@ readonly class UserName
         public string $value
     ) {
         if (Str::length($value) < 2) {
-            throw new InvalidArgumentException("Name $name must have at least 2 symbols");
+            throw new InvalidArgumentException("Name $value must have at least 2 symbols");
         }
     }
 

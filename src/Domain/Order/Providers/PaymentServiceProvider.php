@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Src\Domain\Order\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Src\Domain\Order\Exceptions\PaymentProviderException;
 use Src\Domain\Order\Models\Payment;
 use Src\Domain\Order\Payment\Gateways\YooKassa;
 use Src\Domain\Order\Payment\PaymentData;
@@ -17,6 +18,9 @@ class PaymentServiceProvider extends ServiceProvider
 
     }
 
+    /**
+     * @throws PaymentProviderException
+     */
     public function boot(): void
     {
         PaymentSystem::provider(new YooKassa(config('payment.providers.yookassa')));

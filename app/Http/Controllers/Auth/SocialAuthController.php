@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
@@ -12,9 +13,7 @@ use Throwable;
 
 class SocialAuthController extends Controller
 {
-    public function __construct(private SocialiteCallbackAction $socialiteCallbackAction)
-    {
-    }
+    public function __construct(private SocialiteCallbackAction $socialiteCallbackAction) {}
 
     public function redirect(string $driver)
     {
@@ -33,7 +32,7 @@ class SocialAuthController extends Controller
             throw new DomainException("Драйвер $driver не поддерживается.");
         }
 
-        $this->socialiteCallbackAction->handle(new SocialiteCallbackDto(
+        $this->socialiteCallbackAction->handle(SocialiteCallbackDto::from(
             $socialNetworkUser->getId(),
             $socialNetworkUser->getName(),
             $socialNetworkUser->getEmail(),

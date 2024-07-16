@@ -10,6 +10,10 @@ use Tests\TestCase;
 
 class PriceTest extends TestCase
 {
+    /**
+     * @throws CurrencyNotAllowed
+     * @throws PriceValueNotAvailable
+     */
     public function test_create_value_object_success()
     {
         $raw = 25000;

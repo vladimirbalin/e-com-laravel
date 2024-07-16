@@ -14,8 +14,8 @@ class RegisterAction implements Register
     public function handle(RegisterDto $dto): void
     {
         $user = User::create([
-            'name' => $dto->name,
-            'email' => $dto->email,
+            'name' => $dto->name->value,
+            'email' => $dto->email->value,
             'password' => bcrypt($dto->password),
         ]);
 

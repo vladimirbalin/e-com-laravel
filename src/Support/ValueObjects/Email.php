@@ -9,20 +9,15 @@ use InvalidArgumentException;
 readonly class Email
 {
     public function __construct(
-        private string $email
+        public string $value
     ) {
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException("Email $email is invalid email address");
+        if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException("Email $value is invalid email address");
         }
     }
 
     public static function fromString(string $email): static
     {
         return new static($email);
-    }
-
-    public function value(): string
-    {
-        return $this->email;
     }
 }
