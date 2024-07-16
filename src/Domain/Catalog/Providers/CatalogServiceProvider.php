@@ -1,13 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Catalog\Providers;
 
-use App\Filters\BrandsFilter;
-use App\Filters\PriceFilter;
 use App\Filters\SortFilter;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Src\Domain\Catalog\Filters\FilterManager;
+use Src\Domain\Catalog\Models\Filter;
 
 class CatalogServiceProvider extends ServiceProvider
 {
@@ -19,12 +21,19 @@ class CatalogServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        app(FilterManager::class)
-            ->registerFilters([
-                new PriceFilter(),
-                new BrandsFilter()
-            ])->registerSortings([
-                new SortFilter()
-            ]);
+        try {
+            $filters = Filter::select(['id', 'name', 'namespace'])
+                ->get()
+                ->map(fn ($filter) => new $filter->namespace)
+                ->toArray();
+
+            app(FilterManager::class)
+                ->registerFilters($filters)
+                ->registerSortings([
+                    new SortFilter()
+                ]);
+        } catch (Exception $e) {
+            Log::warning($e->getMessage());
+        }
     }
 }
