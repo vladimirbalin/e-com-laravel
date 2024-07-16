@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Filters;
@@ -16,24 +17,24 @@ class BrandsFilter extends AbstractFilter
             ->has('products');
     }
 
-    #[\Override] public function title(): string
+    public function title(): string
     {
         return 'Бренды (' . $this->brandsQuery()->count() . ')';
     }
 
-    #[\Override] public function key(): string
+    public function key(): string
     {
         return 'brands';
     }
 
-    #[\Override] public function apply(Builder $query): Builder
+    public function apply(Builder $query): Builder
     {
         return $query->when($this->requestValue(), function (Builder $query) {
             return $query->whereIn('brand_id', $this->requestValue());
         });
     }
 
-    #[\Override] public function values(): array
+    public function values(): array
     {
         return $this->brandsQuery()
             ->get()
@@ -41,7 +42,7 @@ class BrandsFilter extends AbstractFilter
             ->toArray();
     }
 
-    #[\Override] public function view(): string
+    public function view(): string
     {
         return 'catalog.filters.brands';
     }

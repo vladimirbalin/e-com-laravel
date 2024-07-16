@@ -9,7 +9,6 @@ use Src\Domain\Catalog\ViewModels\BrandViewModel;
 use Src\Domain\Catalog\ViewModels\CategoryViewModel;
 use Src\Domain\Product\ViewModels\ProductViewModel;
 
-
 class CatalogController extends Controller
 {
     public function __construct(
