@@ -5,7 +5,7 @@ namespace Src\Support\ValueObjects;
 
 use App\Traits\Makeable;
 use Src\Support\Exceptions\CurrencyNotAllowed;
-use Src\Support\Exceptions\PriceMustNotBeLessThanZero;
+use Src\Support\Exceptions\PriceValueNotAvailable;
 use Stringable;
 
 class Price implements Stringable
@@ -21,7 +21,7 @@ class Price implements Stringable
      * @param string $currency
      * @param int $precision
      * @throws CurrencyNotAllowed
-     * @throws PriceMustNotBeLessThanZero
+     * @throws PriceValueNotAvailable
      */
     public function __construct(
         private int             $value,
@@ -29,11 +29,11 @@ class Price implements Stringable
         private readonly int    $precision = 100
     ) {
         if ($value < 0) {
-            throw new PriceMustNotBeLessThanZero();
+            throw PriceValueNotAvailable::mustNotBeLessThanZero();
         }
 
         if (! isset($this->currencies[$this->currency])) {
-            throw new CurrencyNotAllowed();
+            throw CurrencyNotAllowed::notInListOfAvailableCurrencies();
         }
     }
 

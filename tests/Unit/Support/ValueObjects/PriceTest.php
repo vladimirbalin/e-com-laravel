@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Support\ValueObjects;
 
 use Src\Support\Exceptions\CurrencyNotAllowed;
-use Src\Support\Exceptions\PriceMustNotBeLessThanZero;
+use Src\Support\Exceptions\PriceValueNotAvailable;
 use Src\Support\ValueObjects\Price;
 use Tests\TestCase;
 
@@ -36,7 +36,7 @@ class PriceTest extends TestCase
 
     public function test_less_than_zero_values()
     {
-        $this->expectException(PriceMustNotBeLessThanZero::class);
+        $this->expectException(PriceValueNotAvailable::class);
         $this->expectExceptionMessage(__('exceptions.price_less_than_zero'));
 
         new Price(-25000);
