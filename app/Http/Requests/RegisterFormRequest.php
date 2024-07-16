@@ -22,19 +22,10 @@ class RegisterFormRequest extends FormRequest
     protected function prepareForValidation()
     {
         return $this->merge([
-            'email' => str($this->get('email'))
+            'email' => str($this->input('email'))
                 ->squish()
                 ->lower()
                 ->value()
         ]);
-    }
-
-    public function getDto(): RegisterDto
-    {
-        return new RegisterDto(
-            new UserName($this->get('name')),
-            new Email($this->get('email')),
-            $this->get('password'),
-        );
     }
 }

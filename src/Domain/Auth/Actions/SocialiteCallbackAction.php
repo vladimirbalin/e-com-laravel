@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Auth\Actions;
@@ -9,17 +10,16 @@ use Src\Support\SessionRegenerateAction;
 
 class SocialiteCallbackAction
 {
-    public function handle(SocialiteCallbackDto $dto)
+    public function handle(SocialiteCallbackDto $dto): void
     {
         $user = User::updateOrCreate([
-            $dto->getDriver() . '_id' => $dto->getId(),
+            $dto->driver . '_id' => $dto->id,
         ], [
-            'name' => $dto->getName(),
-            'email' => $dto->getEmail(),
-            'password' => $dto->getPassword()
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'password' => $dto->password
         ]);
 
         SessionRegenerateAction::handle(fn () => auth()->login($user));
-
     }
 }

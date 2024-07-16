@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Support\ValueObjects;
@@ -15,7 +16,7 @@ readonly class Email
         }
     }
 
-    public static function create(string $email): static
+    public static function fromString(string $email): static
     {
         return new static($email);
     }

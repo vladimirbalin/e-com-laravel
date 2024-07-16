@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Auth\Actions;
@@ -12,7 +13,10 @@ class LoginAction
     {
         $oldId = request()->session()->getId();
 
-        if (! auth()->attempt(['email' => $dto->getEmail(), 'password' => $dto->getPassword()])) {
+        if (! auth()->attempt([
+            'email' => $dto->email,
+            'password' => $dto->password
+        ])) {
             return false;
         }
 

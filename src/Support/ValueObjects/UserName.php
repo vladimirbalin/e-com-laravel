@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Support\ValueObjects;
@@ -9,15 +10,15 @@ use InvalidArgumentException;
 readonly class UserName
 {
     public function __construct(
-        private string $name
+        public string $value
     ) {
-        if (Str::length($name) < 2) {
+        if (Str::length($value) < 2) {
             throw new InvalidArgumentException("Name $name must have at least 2 symbols");
         }
     }
 
-    public function value(): string
+    public static function fromString(string $name): self
     {
-        return $this->name;
+        return new self($name);
     }
 }

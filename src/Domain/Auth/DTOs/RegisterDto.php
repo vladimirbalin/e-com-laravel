@@ -1,32 +1,32 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Auth\DTOs;
 
+use App\Http\Requests\RegisterFormRequest;
 use Src\Support\ValueObjects\Email;
 use Src\Support\ValueObjects\UserName;
 
 readonly class RegisterDto
 {
     public function __construct(
-        private UserName $name,
-        private Email    $email,
-        private string   $password,
-    ) {
+        public UserName $name,
+        public Email    $email,
+        public string   $password,
+    ) {}
+
+    public static function make(UserName $name, Email $email, string $password): self
+    {
+        return new self($name, $email, $password);
     }
 
-    public function getEmail(): Email
+    public static function fromRequest(RegisterFormRequest $request): self
     {
-        return $this->email;
-    }
-
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function getName(): UserName
-    {
-        return $this->name;
+        return new self(
+            UserName::fromString($request->input('name')),
+            Email::fromString($request->input('email')),
+            $request->input('password'),
+        );
     }
 }

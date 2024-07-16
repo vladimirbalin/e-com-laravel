@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Src\Domain\Auth\Actions;
@@ -13,9 +14,9 @@ class RegisterAction implements Register
     public function handle(RegisterDto $dto): void
     {
         $user = User::create([
-            'name' => $dto->getName()->value(),
-            'email' => $dto->getEmail()->value(),
-            'password' => bcrypt($dto->getPassword()),
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'password' => bcrypt($dto->password),
         ]);
 
         event(new Registered($user));
