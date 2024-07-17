@@ -39,14 +39,20 @@
 
 - [2024_03_05_192001_create_seos_table.php](database/migrations/2024_03_05_192001_create_seos_table.php) Таблица в бд
 - [app/Models/Seo.php](app/Models/Seo.php)
+- [SeoUrlCast](app/Casts/SeoUrlCast.php)
 - Шэрим с вьюхами [SeoMiddleware](app/Http/Middleware/SeoMiddleware.php). Опираемся на url'ы
 
 ### EAV
 
 - Денормализованные пропертис в модели
-  продукта [src/Domain/Product/Models/Product.php](src/Domain/Product/Models/Product.php#L80)
+  продукта [Product](src/Domain/Product/Models/Product.php#L80)
 - Job [SavePropertiesForProductJob](app/Jobs/SavePropertiesForProductJob.php)
 - Observer [ProductObserver](app/Observers/ProductObserver.php#L15)
 - Ещё несколько eav реализаций с других
   проектов: [lucid.app auth required, запривачено в моём акке](https://lucid.app/lucidchart/111f8415-5cf0-4514-99f7-731a45afa69f/edit?invitationId=inv_763bc7ae-1e5d-47de-8466-dd71b666e4ea&page=0_0#)
-- Текущая для products, options, properties ![img.png](eav-products-schema.png)
+- Для products, options, properties:
+  ![img.png](eav-products-schema.png)
+
+### Casts, одно из решений в работе с админкой:
+
+- [PriceCast](app/Casts/PriceCast.php#L13)
