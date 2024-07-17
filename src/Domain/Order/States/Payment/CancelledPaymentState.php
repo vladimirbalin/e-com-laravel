@@ -10,17 +10,17 @@ use Src\Support\State\State;
 
 class CancelledPaymentState extends PaymentState
 {
-    #[Override] public function canBeChanged(): bool
+    public function canBeChanged(): bool
     {
         return false;
     }
 
-    #[Override] public function value(): string
+    public function value(): string
     {
         return PaymentStateEnum::CANCELLED->value;
     }
 
-    #[Override] public function humanValue(): string
+    public function humanValue(): string
     {
         return 'Отменен';
     }

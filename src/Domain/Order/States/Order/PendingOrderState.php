@@ -13,17 +13,17 @@ class PendingOrderState extends OrderState
         CancelledOrderState::class
     ];
 
-    #[Override] public function canBeChanged(): bool
+    public function canBeChanged(): bool
     {
         return true;
     }
 
-    #[Override] public function value(): string
+    public function value(): string
     {
         return OrderStatusEnum::PENDING->value;
     }
 
-    #[Override] public function humanValue(): string
+    public function humanValue(): string
     {
         return 'В ожидании';
     }
