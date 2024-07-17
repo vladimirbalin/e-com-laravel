@@ -8,17 +8,17 @@ use Src\Domain\Catalog\Filters\AbstractFilter;
 
 class SortFilter extends AbstractFilter
 {
-    #[\Override] public function title(): string
+    public function title(): string
     {
         return 'Сортировать по';
     }
 
-    #[\Override] public function key(): string
+    public function key(): string
     {
         return 'sort';
     }
 
-    #[\Override] public function apply(Builder $query): Builder
+    public function apply(Builder $query): Builder
     {
         return $query->when($this->requestValue(), function (Builder $query) {
             $sort = request()->str('filters.sort');
@@ -32,7 +32,7 @@ class SortFilter extends AbstractFilter
         });
     }
 
-    #[\Override] public function values(): array
+    public function values(): array
     {
         return [
             '' => 'По умолчанию',
@@ -42,7 +42,7 @@ class SortFilter extends AbstractFilter
         ];
     }
 
-    #[\Override] public function view(): string
+    public function view(): string
     {
         return 'catalog.filters.sort';
     }

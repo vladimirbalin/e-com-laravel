@@ -9,17 +9,17 @@ use Src\Support\ValueObjects\Price;
 
 class PriceFilter extends AbstractFilter
 {
-    #[\Override] public function title(): string
+    public function title(): string
     {
         return 'Цена';
     }
 
-    #[\Override] public function key(): string
+    public function key(): string
     {
         return 'price';
     }
 
-    #[\Override] public function apply(Builder $query): Builder
+    public function apply(Builder $query): Builder
     {
         return $query->when($this->requestValue(), function (Builder $query) {
             return $query->whereBetween('price', [$this->from()->getValue(), $this->to()->getValue()]);
@@ -42,13 +42,13 @@ class PriceFilter extends AbstractFilter
 
     public function values(): array
     {
-       return [
-          'from' => $this->from()->getPreparedValue(),
-          'to' => $this->to()->getPreparedValue(),
+        return [
+            'from' => $this->from()->getPreparedValue(),
+            'to' => $this->to()->getPreparedValue(),
         ];
     }
 
-    #[\Override] public function view(): string
+    public function view(): string
     {
         return 'catalog.filters.price';
     }

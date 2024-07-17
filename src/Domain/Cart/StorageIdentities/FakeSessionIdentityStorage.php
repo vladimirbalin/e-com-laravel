@@ -7,7 +7,7 @@ use Src\Domain\Cart\Contracts\CartIdentityStorageContract;
 
 class FakeSessionIdentityStorage implements CartIdentityStorageContract
 {
-    #[\Override] public function get(): string
+    public function get(): string
     {
         return 'tests';
     }

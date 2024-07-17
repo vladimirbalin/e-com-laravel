@@ -7,7 +7,7 @@ use Src\Domain\Cart\Contracts\CartIdentityStorageContract;
 
 class SessionIdentityStorage implements CartIdentityStorageContract
 {
-    #[\Override] public function get(): string
+    public function get(): string
     {
         return session()->getId();
     }
