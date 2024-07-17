@@ -56,3 +56,11 @@
 ### Casts, одно из решений в работе с админкой:
 
 - [PriceCast](app/Casts/PriceCast.php#L13)
+
+### State pattern
+
+- [Абcтрактный State](src/Support/State/State.php)
+- Стейты [Order'ов](src/Domain/Order/States/Order)
+- Стейты [Payment'ов](src/Domain/Order/States/Payment)
+- Асбтрактные
+  прослойки [OrderState](src/Domain/Order/States/Order/OrderState.php), [PaymentState](src/Domain/Order/States/Payment/PaymentState.php)
