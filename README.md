@@ -64,3 +64,9 @@
 - Стейты [Payment'ов](src/Domain/Order/States/Payment)
 - Асбтрактные
   прослойки [OrderState](src/Domain/Order/States/Order/OrderState.php), [PaymentState](src/Domain/Order/States/Payment/PaymentState.php)
+
+### Разница получения параметров из request объекта:
+
+- `request('param')` - query, body, **route**, вложенность с '.'
+- `request()->input('param')` - query, body, вложенность с '.'
+- `request()->get('param')` - query, body. Используется Symfony component.
