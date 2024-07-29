@@ -53,6 +53,16 @@ jobs:
         run: |
           php artisan test
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: laravel
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=5s --health-retries=3
+
   phpinsights:
 
     runs-on: ubuntu-latest
@@ -87,13 +97,3 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
     #      - name: Run phpinsights
     #        run: ./vendor/bin/phpinsights --no-interaction --min-quality=80 --min-complexity=90 --min-architecture=70 --min-style=75 --disable-security-check
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: laravel
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=5s --health-retries=3
