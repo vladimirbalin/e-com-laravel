@@ -51,6 +51,9 @@ jobs:
       - name: Run test suite
         run: php artisan test
 
+        env:
+          FILESYSTEM_DISK: public
+
     services:
       mysql:
         image: mysql:8.0
